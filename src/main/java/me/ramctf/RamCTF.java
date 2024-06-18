@@ -10,6 +10,6 @@ public class RamCTF extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SetupHomePage(), this);
         getServer().getPluginManager().registerEvents(new TeamHomePage(), this);
         getServer().getPluginManager().registerEvents(new Teams(), this);
-        Runnable.updateScoreboard();
+        Runnable.runContinuously();
     }
 }

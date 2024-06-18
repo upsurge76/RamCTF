@@ -1,6 +1,7 @@
 package me.ramctf;
 import org.bukkit.event.Listener;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -8,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import me.ramctf.InventorySlots.InventorySlotsSetup;
 import net.md_5.bungee.api.ChatColor;
 
 public class SetupHomePage implements Listener{
@@ -26,13 +28,13 @@ public class SetupHomePage implements Listener{
                 p.sendMessage(ChatColor.BLUE + "Blue Flag Location Set");
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3);
                 p.closeInventory();
-                GameProperties.bluePlatformLocation = p.getLocation();
+                GameProperties.blueFlagLocation = new Location(p.getWorld(), p.getLocation().getBlockX()+.5, p.getLocation().getBlockY(), p.getLocation().getBlockZ()+.5);
             
             } else if(clickedItem.getType() == Material.RED_BANNER){
                 p.sendMessage(ChatColor.RED + "Red Flag Location Set");
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3);
                 p.closeInventory();
-                GameProperties.redPlatformLocation = p.getLocation();
+                GameProperties.redFlagLocation = new Location(p.getWorld(), p.getLocation().getBlockX()+.5, p.getLocation().getBlockY(), p.getLocation().getBlockZ()+.5);
 
             } else if(clickedItem.getType() == Material.LEATHER_CHESTPLATE){
                 if(!GameProperties.teamSetupStarted){
@@ -50,18 +52,18 @@ public class SetupHomePage implements Listener{
     public static void ShowHomePage(Player p){
         Inventory inv = Bukkit.createInventory(p, 18, inventoryName);
 
-        inv.setItem(0, InventorySlots.getSetupSlot1());
-        inv.setItem(1, InventorySlots.getSetupSlot2());
+        inv.setItem(0, InventorySlotsSetup.getBlueFlagSlot());
+        inv.setItem(1, InventorySlotsSetup.getRedFlagSlot());
         for(int i = 2; i < 8; i++){
-            inv.setItem(i, InventorySlots.getGlassPane());
+            inv.setItem(i, InventorySlotsSetup.getGlassPane());
         }
-        inv.setItem(8, InventorySlots.getSetupSlot8());
-        inv.setItem(9, InventorySlots.getSetupSlot9());
-        inv.setItem(10, InventorySlots.getSetupSlot10());
+        inv.setItem(8, InventorySlotsSetup.getTeamSetupSlot());
+        inv.setItem(9, InventorySlotsSetup.getBlueFlagStatus());
+        inv.setItem(10, InventorySlotsSetup.getRedFlagStatus());
         for(int i = 11; i < 17; i++){
-            inv.setItem(i, InventorySlots.getGlassPane());
+            inv.setItem(i, InventorySlotsSetup.getGlassPane());
         }
-        inv.setItem(17, InventorySlots.getSetupSlot17());
+        inv.setItem(17, InventorySlotsSetup.getTeamSetupStatus());
         
 
         p.openInventory(inv);

@@ -4,14 +4,11 @@ import org.bukkit.Location;
 public class GameProperties {
     static boolean gameStarted = false;
 
-    static boolean teamSetupStarted = false;
-    static boolean teamSetupCompleted = false;
+    public static boolean teamSetupStarted = false;
+    public static boolean teamSetupCompleted = false;
     
-    static Location bluePlatformLocation = null;
-    static Location redPlatformLocation = null;
-
-    static boolean bluePlatformSpawned = false;
-    static boolean redPlatformSpawned = false;
+    public static Location blueFlagLocation = null;
+    public static Location redFlagLocation = null;
 
     static int redTeamScore = 0;
     static int blueTeamScore = 0;

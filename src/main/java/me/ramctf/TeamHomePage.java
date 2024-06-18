@@ -11,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
+import me.ramctf.InventorySlots.InventorySlotsTeam;
 import net.md_5.bungee.api.ChatColor;
 
 public class TeamHomePage implements Listener{
@@ -47,14 +48,16 @@ public class TeamHomePage implements Listener{
     public static void ShowHomePage(Player p){
         Inventory inv = Bukkit.createInventory(p, 9, inventoryName);
 
-        inv.setItem(0, InventorySlots.getTeamSlot1(p));
-        inv.setItem(1, InventorySlots.getTeamSlot2(p));
+        inv.setItem(0, InventorySlotsTeam.getTeamSlot1(p));
+        inv.setItem(1, InventorySlotsTeam.getTeamSlot2(p));
         for(int i = 2; i < 9; i++){
-            inv.setItem(i, InventorySlots.getGlassPane());
+            inv.setItem(i, InventorySlotsTeam.getGlassPane());
         }
 
         p.openInventory(inv);
     }
+
+
 }
 
 
