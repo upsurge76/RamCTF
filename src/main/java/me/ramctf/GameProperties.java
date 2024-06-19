@@ -13,5 +13,12 @@ public class GameProperties {
     static int redTeamScore = 0;
     static int blueTeamScore = 0;
 
-    
+    public static int pregameTimer = 2;
+    public static int gameTimer = 10;
+
+    public static int minutesUntilGameStart = 0;
+
+    public static boolean isGameReadyToStart(){
+        return teamSetupCompleted && blueFlagLocation != null && redFlagLocation != null;
+    }
 }

@@ -15,7 +15,7 @@ public class CreateTeamInventory implements CommandExecutor {
         if(sender instanceof Player){
             if(!GameProperties.gameStarted){
                 if(GameProperties.teamSetupStarted){
-                    TeamHomePage.ShowHomePage(p);
+                    TeamPage.ShowHomePage(p);
                     return true;
                 } else {
                     sender.sendMessage("Game host has not started team setup.");

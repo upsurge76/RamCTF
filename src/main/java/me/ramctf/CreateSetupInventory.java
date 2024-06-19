@@ -17,10 +17,9 @@ public class CreateSetupInventory implements CommandExecutor {
             if(sender.isOp()){
                 if(!GameProperties.gameStarted){
                     Player p = (Player) sender;
-                    SetupHomePage.ShowHomePage(p);
+                    SetupPage.ShowHomePage(p);
                     return true;
-                }
-
+                } 
             } else {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
             }

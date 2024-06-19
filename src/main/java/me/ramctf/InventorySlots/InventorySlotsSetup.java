@@ -23,6 +23,28 @@ public class InventorySlotsSetup {
 
     }
 
+    public static ItemStack getStartButton(){
+
+        if(GameProperties.isGameReadyToStart()){
+            ItemStack startLever = new ItemStack(Material.LEVER);
+            ItemMeta startLeverMeta = startLever.getItemMeta();
+            startLeverMeta.setDisplayName(ChatColor.GREEN + "Start Game");
+            startLeverMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+            startLeverMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            startLever.setItemMeta(startLeverMeta);
+            return startLever;
+
+        } else {
+            ItemStack startLever = new ItemStack(Material.LEVER);
+            ItemMeta startLeverMeta = startLever.getItemMeta();
+            startLeverMeta.setDisplayName(ChatColor.RED + "Game Not Ready To Start");
+            startLever.setItemMeta(startLeverMeta);
+            return startLever;
+        
+        }
+
+    }
+
     public static ItemStack getRedFlagSlot(){
         ItemStack redBanner = new ItemStack(Material.RED_BANNER);
         ItemMeta redBannerMeta = redBanner.getItemMeta();
@@ -30,6 +52,14 @@ public class InventorySlotsSetup {
         redBanner.setItemMeta(redBannerMeta);
         return redBanner;
 
+    }
+
+    public static ItemStack getSettingsSlot(){
+        ItemStack settings = new ItemStack(Material.COMPASS);
+        ItemMeta settingsMeta = settings.getItemMeta();
+        settingsMeta.setDisplayName(ChatColor.WHITE + "Game Settings");
+        settings.setItemMeta(settingsMeta);
+        return settings;
     }
 
 
@@ -75,7 +105,7 @@ public class InventorySlotsSetup {
         } else {
             ItemStack greenGlassPane = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
             ItemMeta greenGlassPaneMeta = greenGlassPane.getItemMeta();
-            greenGlassPaneMeta.setDisplayName(ChatColor.RED + "Red Flag Location Set");
+            greenGlassPaneMeta.setDisplayName(ChatColor.GREEN + "Red Flag Location Set");
             greenGlassPane.setItemMeta(greenGlassPaneMeta);
             return greenGlassPane;
         }
@@ -85,13 +115,13 @@ public class InventorySlotsSetup {
         if(GameProperties.blueFlagLocation == null){
             ItemStack redGlassPane = new ItemStack(Material.RED_STAINED_GLASS_PANE);
             ItemMeta redGlassPaneMeta = redGlassPane.getItemMeta();
-            redGlassPaneMeta.setDisplayName(ChatColor.BLUE + "Blue Flag Location Not Set");
+            redGlassPaneMeta.setDisplayName(ChatColor.RED + "Blue Flag Location Not Set");
             redGlassPane.setItemMeta(redGlassPaneMeta);
             return redGlassPane;
         } else {
             ItemStack greenGlassPane = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
             ItemMeta greenGlassPaneMeta = greenGlassPane.getItemMeta();
-            greenGlassPaneMeta.setDisplayName(ChatColor.BLUE + "Blue Flag Location Set");
+            greenGlassPaneMeta.setDisplayName(ChatColor.GREEN + "Blue Flag Location Set");
             greenGlassPane.setItemMeta(greenGlassPaneMeta);
             return greenGlassPane;
         }

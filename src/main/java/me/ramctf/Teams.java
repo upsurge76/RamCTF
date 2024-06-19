@@ -14,17 +14,11 @@ public class Teams implements Listener{
     //variables for teams and scoreboard
     static Team red;
     static Team blue;
-    Location redflag;
-    Location blueflag;
-    static Score bluescore;
-    static Score redscore;
     static Scoreboard board;
     static Objective obj;
-
-    @EventHandler
-    public void onPlayerJoin(Player p){
-        updateScoreboard();
-    }
+    static Team BlueInfo;
+    static Team RedInfo;
+    static Team GameInfo;
 
     public static void initializeTeams(){
 
@@ -32,10 +26,24 @@ public class Teams implements Listener{
         board = manager.getNewScoreboard();
         obj = board.registerNewObjective("MainScoreboard","dummy", ChatColor.BOLD + "------RAM-CTF------");
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-        bluescore = obj.getScore(ChatColor.BLUE + "BLUE SCORE: " + ChatColor.GOLD);
-        redscore = obj.getScore(ChatColor.RED + "RED SCORE: " + ChatColor.GOLD);
-        redscore.setScore(0);
-        bluescore.setScore(0);
+
+        GameInfo = board.registerNewTeam("GameInfo");
+        GameInfo.addEntry(ChatColor.AQUA.toString());
+        GameInfo.setPrefix(ChatColor.GREEN + "");
+        GameInfo.setSuffix("");
+        obj.getScore(ChatColor.AQUA.toString()).setScore(2);
+
+        BlueInfo = board.registerNewTeam("BlueInfo");
+        BlueInfo.addEntry(ChatColor.WHITE.toString());
+        BlueInfo.setPrefix(ChatColor.BLUE + "Blue Score: ");
+        BlueInfo.setSuffix("");
+        obj.getScore(ChatColor.WHITE.toString()).setScore(1);
+
+        RedInfo = board.registerNewTeam("RedInfo");
+        RedInfo.addEntry(ChatColor.BLACK.toString());
+        RedInfo.setPrefix(ChatColor.RED + "Red Score: ");
+        RedInfo.setSuffix("");
+        obj.getScore(ChatColor.BLACK.toString()).setScore(0);
 
         blue = board.registerNewTeam("Blue");
         blue.setPrefix(ChatColor.BLUE + "[BLUE] " + ChatColor.WHITE);
@@ -51,10 +59,15 @@ public class Teams implements Listener{
 
     public static void updateScoreboard(){
         for(Player p : Bukkit.getOnlinePlayers()){
-            bluescore = obj.getScore(ChatColor.BLUE + "BLUE SCORE: " + ChatColor.GOLD);
-            redscore = obj.getScore(ChatColor.RED + "RED SCORE: " + ChatColor.GOLD);
-            redscore.setScore(GameProperties.redTeamScore);
-            bluescore.setScore(GameProperties.blueTeamScore);
+            RedInfo.setSuffix(ChatColor.GOLD + Integer.toString(GameProperties.redTeamScore));
+            BlueInfo.setSuffix(ChatColor.GOLD + Integer.toString(GameProperties.blueTeamScore));
+            if(!GameProperties.gameStarted){
+                if(GameProperties.minutesUntilGameStart > 0){
+                    GameInfo.setSuffix(ChatColor.GREEN + "Game Starting in " + ChatColor.GOLD + GameProperties.minutesUntilGameStart + " minutes");
+                } else {
+                    GameInfo.setSuffix(ChatColor.GREEN + "Waiting for game start");
+                }
+            }
             p.setScoreboard(board);
         }
     }
