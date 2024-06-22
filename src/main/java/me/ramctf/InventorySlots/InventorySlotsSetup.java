@@ -65,8 +65,8 @@ public class InventorySlotsSetup {
 
 
     public static ItemStack getTeamSetupSlot(){
-        if (GameProperties.teamSetupCompleted == false){
-            if (GameProperties.teamSetupStarted == false){
+        if (GameProperties.teamSetupCompleted() == false){
+            if (GameProperties.teamSetupStarted() == false){
                 ItemStack leatherChestPlate = new ItemStack(Material.LEATHER_CHESTPLATE);
                 LeatherArmorMeta leatherchestplateMeta = (LeatherArmorMeta) leatherChestPlate.getItemMeta();
                 leatherchestplateMeta.setDisplayName(ChatColor.WHITE + "Begin Team Setup");
@@ -97,7 +97,7 @@ public class InventorySlotsSetup {
     }
 
     public static ItemStack getRedFlagStatus(){
-        if(GameProperties.redFlagLocationBase == null){
+        if(GameProperties.redFlagLocationBase() == null){
             ItemStack redGlassPane = new ItemStack(Material.RED_STAINED_GLASS_PANE);
             ItemMeta redGlassPaneMeta = redGlassPane.getItemMeta();
             redGlassPaneMeta.setDisplayName(ChatColor.RED + "Red Flag Location Not Set");
@@ -113,7 +113,7 @@ public class InventorySlotsSetup {
     }
 
     public static ItemStack getBlueFlagStatus(){
-        if(GameProperties.blueFlagLocationBase == null){
+        if(GameProperties.blueFlagLocationBase() == null){
             ItemStack redGlassPane = new ItemStack(Material.RED_STAINED_GLASS_PANE);
             ItemMeta redGlassPaneMeta = redGlassPane.getItemMeta();
             redGlassPaneMeta.setDisplayName(ChatColor.RED + "Blue Flag Location Not Set");
@@ -129,14 +129,14 @@ public class InventorySlotsSetup {
     }
 
     public static ItemStack getTeamSetupStatus(){
-        if(!GameProperties.teamSetupStarted && !GameProperties.teamSetupCompleted){
+        if(!GameProperties.teamSetupStarted() && !GameProperties.teamSetupCompleted()){
             ItemStack redGlassPane = new ItemStack(Material.RED_STAINED_GLASS_PANE);
             ItemMeta redGlassPaneMeta = redGlassPane.getItemMeta();
             redGlassPaneMeta.setDisplayName(ChatColor.WHITE + "Team Setup Not Started");
             redGlassPane.setItemMeta(redGlassPaneMeta);
             return redGlassPane;
 
-        } else if(!GameProperties.teamSetupCompleted && GameProperties.teamSetupStarted){
+        } else if(!GameProperties.teamSetupCompleted() && GameProperties.teamSetupStarted()){
             ItemStack yellowGlassPane = new ItemStack(Material.YELLOW_STAINED_GLASS_PANE);
             ItemMeta yellowGlassPaneMeta = yellowGlassPane.getItemMeta();
             yellowGlassPaneMeta.setDisplayName(ChatColor.GREEN + "Waiting for all players to pick teams");

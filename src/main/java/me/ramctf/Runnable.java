@@ -8,10 +8,7 @@ import org.bukkit.Particle.DustOptions;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.Material;
+
 import org.bukkit.ChatColor;
 
 public class Runnable {
@@ -22,17 +19,6 @@ public class Runnable {
 
     public static void runEvery2Ticks() {
 
-        ItemStack redLeatherChestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
-        LeatherArmorMeta redLeatherChestplateMeta = (LeatherArmorMeta) redLeatherChestplate.getItemMeta();
-        redLeatherChestplateMeta.setDisplayName(ChatColor.RED + "Red Team");
-        redLeatherChestplateMeta.setColor(Color.RED);
-        redLeatherChestplate.setItemMeta(redLeatherChestplateMeta);
-
-        ItemStack blueLeatherChestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
-        LeatherArmorMeta blueLeatherChestplateMeta = (LeatherArmorMeta) blueLeatherChestplate.getItemMeta();
-        blueLeatherChestplateMeta.setDisplayName(ChatColor.BLUE + "Blue Team");
-        blueLeatherChestplateMeta.setColor(Color.BLUE);
-        blueLeatherChestplate.setItemMeta(blueLeatherChestplateMeta);
 
         new BukkitRunnable() {
             @Override
@@ -41,44 +27,43 @@ public class Runnable {
                 Teams.updateScoreboard();
 
                 for(Player p : Bukkit.getOnlinePlayers()){
-                    String team = Teams.getTeam(p);
-                    if(!team.equalsIgnoreCase("None")){
-                        if(team.equalsIgnoreCase("Blue")){
-                            PlayerInventory inventory = p.getInventory();
-                            ItemStack[] armor = inventory.getArmorContents();
-                            armor[2] = blueLeatherChestplate;
-                            p.getInventory().setArmorContents(armor);
-                            
-                        } else if(team.equalsIgnoreCase("Red")){
-                            PlayerInventory inventory = p.getInventory();
-                            ItemStack[] armor = inventory.getArmorContents();
-                            armor[2] = redLeatherChestplate;
-                            p.getInventory().setArmorContents(armor);
-                            
-                        }
+                    if(GameProperties.blueFlagCarrier() != null && GameProperties.blueFlagCarrier().equals(p)){
+                        DustOptions dustOptions = new DustOptions(Color.fromRGB(0, 0, 255), 1.0F);
+                        p.getWorld().spawnParticle(Particle.REDSTONE,  p.getLocation(), 45, 1, 0, 1, dustOptions);
+                    } 
+                    if(GameProperties.redFlagCarrier() != null && GameProperties.redFlagCarrier().equals(p)){
+                        DustOptions dustOptions = new DustOptions(Color.fromRGB(255, 0, 0), 1.0F);
+                        p.getWorld().spawnParticle(Particle.REDSTONE,  p.getLocation(), 45, 1, 0, 1, dustOptions);
                     }
                 }
-                
-                if(GameProperties.blueFlagLocationBase != null && !GameProperties.blueFlagOnGround){
+
+                if(GameProperties.blueFlagLocationBase() != null && (!GameProperties.blueFlagLocationBase().equals(GameProperties.blueFlagCurrentLocation()))){
                     DustOptions dustOptions = new DustOptions(Color.fromRGB(0, 0, 255), 1.0F);
-                    Location particleLocation = GameProperties.blueFlagLocationBase.clone().add(0, 1, 0);
+                    Location particleLocation = GameProperties.blueFlagLocationBase().clone().add(0, 1, 0);
                     particleLocation.getWorld().spawnParticle(Particle.REDSTONE, particleLocation, 25, 0.2, 0.4, 0.2, dustOptions);
 
-
                 }
-                if(GameProperties.redFlagLocationBase != null && !GameProperties.redFlagOnGround){
+                if(GameProperties.redFlagLocationBase() != null && (!GameProperties.redFlagLocationBase().equals(GameProperties.redFlagCurrentLocation()))){
                     DustOptions dustOptions = new DustOptions(Color.fromRGB(255, 0, 0), 1.0F);
-                    Location particleLocation = GameProperties.redFlagLocationBase.clone().add(0, 1, 0);
+                    Location particleLocation = GameProperties.redFlagLocationBase().clone().add(0, 1, 0);
                     particleLocation.getWorld().spawnParticle(Particle.REDSTONE, particleLocation, 25, 0.2, 0.4, 0.2, dustOptions);
-
+                }
+                if(GameProperties.blueFlagOnGround() && (!GameProperties.blueFlagLocationBase().equals(GameProperties.blueFlagCurrentLocation()))){
+                    for(int i = 5; i < 100; i+=1){
+                        GameProperties.blueFlagCurrentLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, GameProperties.blueFlagCurrentLocation().clone().add(.5, i, .5), 2, 0, 0.3, 0, 0);
+                    }
+                }
+                if(GameProperties.redFlagOnGround() && (!GameProperties.redFlagLocationBase().equals(GameProperties.redFlagCurrentLocation()))){
+                    for(int i = 5; i < 100; i+=1){
+                        GameProperties.redFlagCurrentLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, GameProperties.redFlagCurrentLocation().clone().add(.5, i, .5), 2, 0, 0.3, 0, 0);
+                    }
+                }
+                if(GameProperties.blueFlagOnGround()){
+                    FlagLogic.spawnBlueFlag(GameProperties.blueFlagCurrentLocation());
                 }
                 
-                if(GameProperties.blueFlagOnGround){
-                    FlagLogic.spawnBlueFlag(GameProperties.blueFlagCurrentLocation);
-                }
-                
-                if(GameProperties.redFlagOnGround){
-                    FlagLogic.spawnRedFlag(GameProperties.redFlagCurrentLocation);
+                if(GameProperties.redFlagOnGround()){
+                    FlagLogic.spawnRedFlag(GameProperties.redFlagCurrentLocation());
                 }
             
             }
@@ -99,9 +84,9 @@ public class Runnable {
                 for(Player p : Bukkit.getOnlinePlayers()){
                     String team = Teams.getTeam(p);
                     if(team.equalsIgnoreCase("Blue")){
-                        p.teleport(GameProperties.blueFlagLocationBase.clone().add(0, 1, 0));
+                        p.teleport(GameProperties.blueFlagLocationBase().clone().add(0, 1, 0.5));
                     } else if(team.equalsIgnoreCase("Red")){
-                        p.teleport(GameProperties.redFlagLocationBase.clone().add(0, 1, 0));
+                        p.teleport(GameProperties.redFlagLocationBase().clone().add(0, 1, 0.5));
                     }
                 }
                 cancel();
@@ -115,30 +100,35 @@ public class Runnable {
 
     private static void displayGameStartMessage() {
         for(Player p : Bukkit.getOnlinePlayers()){
-            p.sendTitle(ChatColor.GREEN + "", "You have " + String.valueOf(GameProperties.pregameTimer) + " minutes to collect items before the game begins", 5, 60, 5);
-            p.playSound(p.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
-        }
+            if(GameProperties.pregameTimer() > 0){
+                p.sendTitle(ChatColor.GREEN + "", "You have " + String.valueOf(GameProperties.pregameTimer()) + " minutes to collect items before the game begins", 5, 60, 5);
+                p.playSound(p.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);  
+                }
+            }
         pregameTimer();
     }
 
     private static void pregameTimer() {
-        GameProperties.minutesUntilGameStart = GameProperties.pregameTimer;
+        GameProperties.setMinutesUntilGameStart(GameProperties.pregameTimer());
         new BukkitRunnable() {
             @Override
             public void run() {
                 pregameTicksElapsed++;
-                if(pregameTicksElapsed % (20*60) == 0){
-                    GameProperties.minutesUntilGameStart--;
+                if(!GameProperties.pregameStarted()){
+                    cancel(); //in case game is ended early
                 }
-                if(GameProperties.minutesUntilGameStart == 0){
-                    GameProperties.pregameStarted = false;
-                    GameProperties.gameStarted = true;
+                if(GameProperties.minutesUntilGameStart() == 0){
+                    GameProperties.setPregameStarted(false);
+                    GameProperties.setGameStarted(true);
                     pregameAlertPlayed = false;
                     GameManager.startGame();
                     cancel();
 
                 }
-                if(GameProperties.minutesUntilGameStart == 1 && !pregameAlertPlayed){
+                if(pregameTicksElapsed % (20*60) == 0){
+                    GameProperties.setMinutesUntilGameStart(GameProperties.minutesUntilGameStart() - 1);
+                }
+                if(GameProperties.minutesUntilGameStart() == 1 && !pregameAlertPlayed){
                     for(Player p : Bukkit.getOnlinePlayers()){
                         p.sendTitle(ChatColor.GREEN + "", "Game starting in 1 minute", 5, 60, 5);
                         p.playSound(p.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
@@ -156,12 +146,14 @@ public class Runnable {
                 FlagLogic.calculateCaptures();
 
                 gameTicksElapsed++;
-                if(gameTicksElapsed == durationMins * 60 * 20){
-                    GameProperties.pregameStarted = false;
-                    GameProperties.minutesUntilGameStart = 0;
-                    GameProperties.blueTeamScore = 0;
-                    GameProperties.redTeamScore = 0;
-                    cancel();
+                if(!GameProperties.gameStarted()){
+                    cancel(); //in case game is ended early
+                }
+                if(GameProperties.minutesUntilGameEnd() == 0){
+                    cancel(); 
+                }
+                if(gameTicksElapsed % (20*60) == 0){
+                    GameProperties.setMinutesUntilGameEnd(GameProperties.minutesUntilGameEnd() - 1);
                 }
             }
         }.runTaskTimer(JavaPlugin.getPlugin(RamCTF.class), delay, 1);

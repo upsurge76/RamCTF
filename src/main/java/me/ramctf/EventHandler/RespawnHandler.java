@@ -13,51 +13,47 @@ import me.ramctf.RamCTF;
 import me.ramctf.Teams;
 
 public class RespawnHandler implements Listener{
-    int timer = 5;
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent e){
         Player p = e.getPlayer();
-        
+        p.setGameMode(GameMode.SPECTATOR);
 
         if(Teams.getTeam(p).equals("Blue")){
-        p.setGameMode(GameMode.SPECTATOR);
-        p.teleport(GameProperties.blueFlagLocationBase.clone().add(0, 1, 0));
 
             new BukkitRunnable() {
-
+            int timer = 5;
             @Override
             public void run() {
+                if (timer == 5){p.teleport(GameProperties.blueFlagLocationBase().clone().add(0, 1, 0.5));}
                 if (timer > 0) {
                     p.sendTitle(Integer.toString(timer), "", 0, 21, 0);
                     timer -= 1;
                 } else {
                     p.setGameMode(GameMode.SURVIVAL);
-                    p.teleport(GameProperties.blueFlagLocationBase.clone().add(0, 1, 0));
+                    p.teleport(GameProperties.blueFlagLocationBase().clone().add(0, 1, 0.5));
                     cancel();
                 }
             }
-            }.runTaskTimer(JavaPlugin.getPlugin(RamCTF.class), 5, 20);
+            }.runTaskTimer(JavaPlugin.getPlugin(RamCTF.class), 0, 20);
 
         } else if(Teams.getTeam(p).equals("Red")){
-            
-            p.setGameMode(GameMode.SPECTATOR);
-            p.teleport(GameProperties.redFlagLocationBase.clone().add(0, 1, 0));
 
             new BukkitRunnable() {
-
+                int timer = 5;
                 @Override
                 public void run() {
+                    if (timer == 5){p.teleport(GameProperties.redFlagLocationBase().clone().add(0, 1, 0.5));}
                     if (timer > 0) {
                         p.sendTitle(Integer.toString(timer), "", 0, 21, 0);
                         timer -= 1;
                     } else {
                         p.setGameMode(GameMode.SURVIVAL);
-                        p.teleport(GameProperties.redFlagLocationBase.clone().add(0, 1, 0));
+                        p.teleport(GameProperties.redFlagLocationBase().clone().add(0, 1, 0.5));
                         cancel();
                     }
                 }
-                }.runTaskTimer(JavaPlugin.getPlugin(RamCTF.class), 5, 20);
+                }.runTaskTimer(JavaPlugin.getPlugin(RamCTF.class), 0, 20);
         }
     }
 

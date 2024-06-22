@@ -1,6 +1,7 @@
 package me.ramctf;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -8,6 +9,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -20,23 +24,27 @@ public class FlagLogic implements Listener{
         Block b = e.getBlock();
         int x, z;
 
-        if(GameProperties.blueFlagLocationBase != null){
-            x = Helpers.get3AxisDistance(b.getLocation(), GameProperties.blueFlagLocationBase)[0];
-            z = Helpers.get3AxisDistance(b.getLocation(), GameProperties.blueFlagLocationBase)[2];
+        if(GameProperties.blueFlagLocationBase() != null){
+            x = Helpers.get3AxisDistance(b.getLocation(), GameProperties.blueFlagLocationBase())[0];
+            z = Helpers.get3AxisDistance(b.getLocation(), GameProperties.blueFlagLocationBase())[2];
 
             if(x < 3 && z < 3){
                 e.setCancelled(true);
             }
         }
 
-        if(GameProperties.redFlagLocationBase != null){
-            x = Helpers.get3AxisDistance(b.getLocation(), GameProperties.redFlagLocationBase)[0];
-            z = Helpers.get3AxisDistance(b.getLocation(), GameProperties.redFlagLocationBase)[2];
+        if(GameProperties.redFlagLocationBase() != null){
+            x = Helpers.get3AxisDistance(b.getLocation(), GameProperties.redFlagLocationBase())[0];
+            z = Helpers.get3AxisDistance(b.getLocation(), GameProperties.redFlagLocationBase())[2];
 
             if(x < 3 && z < 3){
                 e.setCancelled(true);
             }
-        }        
+        }
+        
+        if(b.getLocation().equals(GameProperties.blueFlagCurrentLocation()) || b.getLocation().equals(GameProperties.redFlagCurrentLocation())){
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler
@@ -45,18 +53,18 @@ public class FlagLogic implements Listener{
         
         int x, z;
 
-        if(GameProperties.blueFlagLocationBase != null){
-            x = Helpers.get3AxisDistance(b.getLocation(), GameProperties.blueFlagLocationBase)[0];
-            z = Helpers.get3AxisDistance(b.getLocation(), GameProperties.blueFlagLocationBase)[2];
+        if(GameProperties.blueFlagLocationBase() != null){
+            x = Helpers.get3AxisDistance(b.getLocation(), GameProperties.blueFlagLocationBase())[0];
+            z = Helpers.get3AxisDistance(b.getLocation(), GameProperties.blueFlagLocationBase())[2];
     
             if(x < 3 && z < 3){
                 e.setCancelled(true);
             }
         }
 
-        if(GameProperties.redFlagLocationBase != null){
-            x = Helpers.get3AxisDistance(b.getLocation(), GameProperties.redFlagLocationBase)[0];
-            z = Helpers.get3AxisDistance(b.getLocation(), GameProperties.redFlagLocationBase)[2];
+        if(GameProperties.redFlagLocationBase() != null){
+            x = Helpers.get3AxisDistance(b.getLocation(), GameProperties.redFlagLocationBase())[0];
+            z = Helpers.get3AxisDistance(b.getLocation(), GameProperties.redFlagLocationBase())[2];
     
             if(x < 3 && z < 3){
                 e.setCancelled(true);
@@ -106,21 +114,28 @@ public class FlagLogic implements Listener{
     }
 
     public static boolean playerCanRecoverThisFlag(Player p, String team){
+        if(p.isDead() || p.getGameMode() == GameMode.SPECTATOR){
+            return false;
+        }
 
         if(team.equalsIgnoreCase("Blue")){
             if(Teams.getTeam(p).equalsIgnoreCase("Blue")){
-                if(GameProperties.redFlagOnGround){
-                    if(Helpers.withinDistance(p.getLocation(), GameProperties.redFlagCurrentLocation, captureDistance)){
-                        return true;
+                if(GameProperties.blueFlagOnGround()){
+                    if(Helpers.withinDistance(p.getLocation(), GameProperties.blueFlagCurrentLocation(), captureDistance)){
+                        if(!GameProperties.blueFlagLocationBase().equals(GameProperties.blueFlagCurrentLocation())){
+                            return true;
+                        }
                     }
                 }
             }
         }
-         if(team.equalsIgnoreCase("Red")){
+        if(team.equalsIgnoreCase("Red")){
             if(Teams.getTeam(p).equalsIgnoreCase("Red")){
-                if(GameProperties.blueFlagOnGround){
-                    if(Helpers.withinDistance(p.getLocation(), GameProperties.blueFlagCurrentLocation, captureDistance)){
-                        return true;
+                if(GameProperties.redFlagOnGround()){
+                    if(Helpers.withinDistance(p.getLocation(), GameProperties.redFlagCurrentLocation(), captureDistance)){
+                        if(!GameProperties.redFlagLocationBase().equals(GameProperties.redFlagCurrentLocation())){
+                            return true;
+                        }
                     }
                 }
             }
@@ -132,11 +147,14 @@ public class FlagLogic implements Listener{
     
 
     public static boolean playerCanStealThisFlag(Player p, String flag){
+        if(p.isDead() || p.getGameMode() == GameMode.SPECTATOR){
+            return false;
+        }
 
         if(flag.equalsIgnoreCase("Blue")){
             if(Teams.getTeam(p).equalsIgnoreCase("Red")){
-                if(GameProperties.blueFlagOnGround){
-                    if(Helpers.withinDistance(p.getLocation(), GameProperties.blueFlagCurrentLocation, captureDistance)){
+                if(GameProperties.blueFlagOnGround()){
+                    if(Helpers.withinDistance(p.getLocation(), GameProperties.blueFlagCurrentLocation(), captureDistance)){
                         return true;
                     }
                 }
@@ -145,24 +163,26 @@ public class FlagLogic implements Listener{
             
         if(flag.equalsIgnoreCase("Red")){
             if(Teams.getTeam(p).equalsIgnoreCase("Blue")){
-                if(GameProperties.redFlagOnGround){
-                    if(Helpers.withinDistance(p.getLocation(), GameProperties.redFlagCurrentLocation, captureDistance)){
+                if(GameProperties.redFlagOnGround()){
+                    if(Helpers.withinDistance(p.getLocation(), GameProperties.redFlagCurrentLocation(), captureDistance)){
                         return true;
                     }
                 }
             }
         }
-
         return false;
         
     }
 
     private static boolean playerCanCaptureThisFlag(Player p, String flag){
+        if(p.isDead() || p.getGameMode() == GameMode.SPECTATOR){
+            return false;
+        }
 
         if(flag.equalsIgnoreCase("Blue")){
             if(Teams.getTeam(p).equalsIgnoreCase("Red")){
-                if(p.equals(GameProperties.blueFlagCarrier)){
-                    if(Helpers.withinDistance(p.getLocation(), GameProperties.redFlagLocationBase, captureDistance)){
+                if(p.equals(GameProperties.blueFlagCarrier())){
+                    if(Helpers.withinDistance(p.getLocation(), GameProperties.redFlagLocationBase(), captureDistance)){
                         return true;
                     }
                 }
@@ -170,8 +190,8 @@ public class FlagLogic implements Listener{
         } 
         if(flag.equalsIgnoreCase("Red")){
             if(Teams.getTeam(p).equalsIgnoreCase("Blue")){
-                if(p.equals(GameProperties.redFlagCarrier)){
-                    if(Helpers.withinDistance(p.getLocation(), GameProperties.blueFlagLocationBase, captureDistance)){
+                if(p.equals(GameProperties.redFlagCarrier())){
+                    if(Helpers.withinDistance(p.getLocation(), GameProperties.blueFlagLocationBase(), captureDistance)){
                         return true;
                     }
                 }
@@ -182,64 +202,64 @@ public class FlagLogic implements Listener{
     }
 
     private static void playerRecoveredRedFlagTasks(Player p){
-        removeRedFlag(GameProperties.redFlagCurrentLocation);
-        GameProperties.redFlagCurrentLocation = GameProperties.redFlagLocationBase;
+        removeRedFlag(GameProperties.redFlagCurrentLocation());
+        GameProperties.setRedFlagCurrentLocation(GameProperties.redFlagLocationBase());
         p.playSound(p.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_XYLOPHONE, 1, 1);
-        for(Player player : Bukkit.getOnlinePlayers()){
-            player.sendMessage(ChatColor.GREEN + "Red Flag Returned");
-        }
+        Teams.broadcastMessage(p.getName() + ChatColor.GREEN + " returned your flag", "Red");
+        Teams.broadcastMessage(p.getName() + ChatColor.RED + " returned enemy flag", "Blue");
     }
 
     private static void playerRecoveredBlueFlagTasks(Player p){
-        removeBlueFlag(GameProperties.blueFlagCurrentLocation);
-        GameProperties.blueFlagCurrentLocation = GameProperties.blueFlagLocationBase;
+        removeBlueFlag(GameProperties.blueFlagCurrentLocation());
+        GameProperties.setBlueFlagCurrentLocation(GameProperties.blueFlagLocationBase());
         p.playSound(p.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_XYLOPHONE, 1, 1);
-        for(Player player : Bukkit.getOnlinePlayers()){
-            player.sendMessage(ChatColor.GREEN + "Blue Flag Returned");
-        }
+        Teams.broadcastMessage(p.getName() + ChatColor.GREEN + " returned your flag", "Blue");
+        Teams.broadcastMessage(p.getName() + ChatColor.RED + " returned enemy flag", "Red");
     }
 
     private static void playerStoleRedFlagTasks(Player p){
-        removeRedFlag(GameProperties.redFlagCurrentLocation);
-        GameProperties.redFlagCarrier = p;
-        GameProperties.redFlagCurrentLocation = null;
-        GameProperties.redFlagOnGround = false;
+        removeRedFlag(GameProperties.redFlagCurrentLocation());
+        GameProperties.setRedFlagCarrier(p);
+        GameProperties.setRedFlagCurrentLocation(null);
+        GameProperties.setRedFlagOnGround(false);
         p.playSound(p.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_XYLOPHONE, 1, 1);
+        p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 1));
         Teams.playAlarm("Red");
-        Teams.broadcastMessage(p.getName() + " stole your flag", "Red");
+        Teams.broadcastMessage(p.getName() + ChatColor.RED + " stole your flag", "Red");
+        Teams.broadcastMessage(p.getName() + ChatColor.GREEN +  " stole enemy flag", "Blue");
     }
 
     private static void playerStoleBlueFlagTasks(Player p){
-        removeBlueFlag(GameProperties.blueFlagCurrentLocation);
-        GameProperties.blueFlagCarrier = p;
-        GameProperties.blueFlagCurrentLocation = null;
-        GameProperties.blueFlagOnGround = false;
+        removeBlueFlag(GameProperties.blueFlagCurrentLocation());
+        GameProperties.setBlueFlagCarrier(p);
+        GameProperties.setBlueFlagCurrentLocation(null);
+        GameProperties.setBlueFlagOnGround(false);
         p.playSound(p.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_XYLOPHONE, 1, 1);
+        p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 1));
         Teams.playAlarm("Blue");
-        Teams.broadcastMessage(ChatColor.RED + p.getName() + " stole your flag", "Blue");
+        Teams.broadcastMessage(p.getName() + ChatColor.RED +  " stole your flag", "Blue", p);
+        Teams.broadcastMessage(p.getName() + ChatColor.GREEN + " stole enemy flag", "Red", p);
     }
 
     private static void playerCapturedRedFlagTasks(Player p){
-        GameProperties.redFlagCarrier = null;
-        GameProperties.redFlagCurrentLocation = GameProperties.redFlagLocationBase;
-        GameProperties.redFlagOnGround = true;
-        GameProperties.blueTeamScore++;
+        GameProperties.setRedFlagCarrier(null);
+        GameProperties.setRedFlagCurrentLocation(GameProperties.redFlagLocationBase());
+        GameProperties.setRedFlagOnGround(true);
+        GameProperties.setBlueTeamScore(GameProperties.blueTeamScore() + 1);
         Teams.playVictory("Blue");
-    
-        for(Player player : Bukkit.getOnlinePlayers()){
-            player.sendMessage(ChatColor.BLUE + "Blue Team Scored");
-        }
+        p.removePotionEffect(PotionEffectType.GLOWING);
+        Teams.broadcastMessage(p.getName() + ChatColor.GREEN + " captured enemy flag", "Blue");
+        Teams.broadcastMessage(p.getName() + ChatColor.RED + " captured your flag", "Red");
     }
 
     private static void playerCapturedBlueFlagTasks(Player p){
-        GameProperties.blueFlagCarrier = null;
-        GameProperties.blueFlagCurrentLocation = GameProperties.blueFlagLocationBase;
-        GameProperties.blueFlagOnGround = true;
-        GameProperties.redTeamScore++;
+        GameProperties.setBlueFlagCarrier(null);
+        GameProperties.setBlueFlagCurrentLocation(GameProperties.blueFlagLocationBase());
+        GameProperties.setBlueFlagOnGround(true);
+        GameProperties.setRedTeamScore(GameProperties.redTeamScore() + 1);
         Teams.playVictory("Red");
-        
-        for(Player player : Bukkit.getOnlinePlayers()){
-            player.sendMessage(ChatColor.RED + "Red Team Scored");
-        }
+        p.removePotionEffect(PotionEffectType.GLOWING);
+        Teams.broadcastMessage(p.getName() + ChatColor.GREEN + " captured enemy flag", "Red");
+        Teams.broadcastMessage(p.getName() + ChatColor.RED + " captured your flag", "Blue");
     }
 }

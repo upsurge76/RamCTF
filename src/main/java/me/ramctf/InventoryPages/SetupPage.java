@@ -12,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
 
 import me.ramctf.GameManager;
 import me.ramctf.GameProperties;
-import me.ramctf.Teams;
 import me.ramctf.InventorySlots.InventorySlotsSetup;
 import net.md_5.bungee.api.ChatColor;
 
@@ -32,16 +31,16 @@ public class SetupPage implements Listener{
                 p.sendMessage(ChatColor.GREEN + "Blue Flag Location Set");
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3);
                 p.closeInventory();
-                GameProperties.blueFlagLocationBase = new Location(p.getWorld(), p.getLocation().getBlockX()+.5, p.getLocation().getBlockY(), p.getLocation().getBlockZ()+.5);
+                GameProperties.setBlueFlagLocationBase(new Location(p.getWorld(), p.getLocation().getBlockX()+.5, p.getLocation().getBlockY(), p.getLocation().getBlockZ()+.5));
             
             } else if(clickedItem.getType() == Material.RED_BANNER){
                 p.sendMessage(ChatColor.GREEN + "Red Flag Location Set");
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3);
                 p.closeInventory();
-                GameProperties.redFlagLocationBase = new Location(p.getWorld(), p.getLocation().getBlockX()+.5, p.getLocation().getBlockY(), p.getLocation().getBlockZ()+.5);
+                GameProperties.setRedFlagLocationBase(new Location(p.getWorld(), p.getLocation().getBlockX()+.5, p.getLocation().getBlockY(), p.getLocation().getBlockZ()+.5));
 
             } else if(clickedItem.getType() == Material.LEATHER_CHESTPLATE){
-                if(!GameProperties.teamSetupStarted){
+                if(!GameProperties.teamSetupStarted()){
 
                     for(Player player : Bukkit.getOnlinePlayers()){
                         player.sendMessage(ChatColor.GREEN + "Team Setup Started. Type /team to pick a team.");
@@ -50,7 +49,7 @@ public class SetupPage implements Listener{
                         }
                     }
                     
-                    GameProperties.teamSetupStarted = true;
+                    GameProperties.setTeamSetupStarted(true);
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 3);
                     SetupPage.ShowHomePage(p);
                 } 
@@ -66,9 +65,6 @@ public class SetupPage implements Listener{
                     p.sendMessage(ChatColor.RED + "Game not ready to start");
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
                 }
-            } else if(clickedItem.getType() == Material.IRON_BARS){
-                Teams.addPlayerBlueTeam(p);
-                GameManager.startGame();
             }
         }
     }
@@ -86,7 +82,6 @@ public class SetupPage implements Listener{
         inv.setItem(9, InventorySlotsSetup.getBlueFlagStatus());
         inv.setItem(10, InventorySlotsSetup.getRedFlagStatus());
         inv.setItem(13, InventorySlotsSetup.getSettingsSlot());
-        inv.setItem(14, new ItemStack(Material.IRON_BARS));
         inv.setItem(17, InventorySlotsSetup.getTeamSetupStatus());
         
         p.openInventory(inv);

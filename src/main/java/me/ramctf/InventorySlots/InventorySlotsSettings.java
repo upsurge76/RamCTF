@@ -15,7 +15,7 @@ public class InventorySlotsSettings {
         return enderEye;
     }
 
-    public static ItemStack getSettingsTimeSlot(){
+    public static ItemStack getSettingsPregameTimeSlot(){
         ItemStack clock = new ItemStack(Material.CLOCK);
         ItemMeta clockMeta = clock.getItemMeta();
         clockMeta.setDisplayName(ChatColor.WHITE + "Game Start Delay");
@@ -23,14 +23,28 @@ public class InventorySlotsSettings {
         return clock;
     }
 
-    public static ItemStack getSettingsTimeInfoSlot(){
+    public static ItemStack getSettingsGameTimeSlot(){
+        ItemStack clock = new ItemStack(Material.CLOCK);
+        ItemMeta clockMeta = clock.getItemMeta();
+        clockMeta.setDisplayName(ChatColor.WHITE + "Game Duration");
+        clock.setItemMeta(clockMeta);
+        return clock;
+    }
+
+    public static ItemStack getSettingsPregameTimeInfoSlot(){
         ItemStack blueStainedGlassPane = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
         ItemMeta blueStainedGlassPaneMeta = blueStainedGlassPane.getItemMeta();
         blueStainedGlassPaneMeta.setDisplayName(ChatColor.WHITE + "Amount of time for resource collection before game starts");
         blueStainedGlassPane.setItemMeta(blueStainedGlassPaneMeta);
         return blueStainedGlassPane;
     }
-        
+    public static ItemStack getSettingsGameTimeInfoSlot(){
+        ItemStack blueStainedGlassPane = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
+        ItemMeta blueStainedGlassPaneMeta = blueStainedGlassPane.getItemMeta();
+        blueStainedGlassPaneMeta.setDisplayName(ChatColor.WHITE + "Amount of time for resource collection");
+        blueStainedGlassPane.setItemMeta(blueStainedGlassPaneMeta);
+        return blueStainedGlassPane;
+    }
     public static ItemStack getGlassPane(){
         ItemStack glasspane = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta glasspaneMeta = glasspane.getItemMeta();

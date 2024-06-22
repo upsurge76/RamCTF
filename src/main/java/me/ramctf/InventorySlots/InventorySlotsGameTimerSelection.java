@@ -7,10 +7,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import me.ramctf.GameProperties;
 import net.md_5.bungee.api.ChatColor;
 
-public class InventorySlotsDelaySelection {
+public class InventorySlotsGameTimerSelection {
     
     public static ItemStack getLabeledGlassPane(int time){
-        if(time == GameProperties.pregameTimer()){
+        if(time == GameProperties.gameTimer()){
             ItemStack glass = new ItemStack(Material.GREEN_STAINED_GLASS);
             ItemMeta glassMeta = glass.getItemMeta();
             glassMeta.setDisplayName(ChatColor.WHITE + String.valueOf(time) + " Minutes");
@@ -26,7 +26,6 @@ public class InventorySlotsDelaySelection {
     }
 
     public static ItemStack getTimeOptions(int index, int[] timeOptions){
-        
         return getLabeledGlassPane(timeOptions[index]);
     }
         

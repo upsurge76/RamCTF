@@ -11,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import me.ramctf.InventorySlots.InventorySlotsSettings;
+import net.md_5.bungee.api.ChatColor;
 
 
 public class GameSettingsPage implements Listener{
@@ -31,7 +32,12 @@ public class GameSettingsPage implements Listener{
             }
 
             if(clickedItem.getType() == Material.CLOCK){
-                DelaySettingsPage.ShowHomePage(p);
+                if(clickedItem.getItemMeta().getDisplayName().equals(ChatColor.WHITE + "Game Start Delay")){
+                    PregameDelaySettingsPage.ShowHomePage(p);
+                }
+                if(clickedItem.getItemMeta().getDisplayName().equals(ChatColor.WHITE + "Game Duration")){
+                    GameDurationSettingsPage.ShowHomePage(p);
+                }
             }
         }
     }
@@ -44,8 +50,10 @@ public class GameSettingsPage implements Listener{
         }
 
         inv.setItem(0, InventorySlotsSettings.getSettingsBackSlot());
-        inv.setItem(2, InventorySlotsSettings.getSettingsTimeSlot());
-        inv.setItem(11, InventorySlotsSettings.getSettingsTimeInfoSlot());
+        inv.setItem(2, InventorySlotsSettings.getSettingsPregameTimeSlot());
+        inv.setItem(3, InventorySlotsSettings.getSettingsGameTimeSlot());
+        inv.setItem(11, InventorySlotsSettings.getSettingsPregameTimeInfoSlot());
+        inv.setItem(12, InventorySlotsSettings.getSettingsGameTimeInfoSlot());
         p.openInventory(inv);
     }
 }
