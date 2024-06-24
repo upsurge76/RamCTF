@@ -71,7 +71,7 @@ public class Runnable {
     }
 
     public static void teleportCountDownDelay(){
-
+        GameProperties.setMinutesUntilGameStart(GameProperties.pregameTimer());
         for(Player p : Bukkit.getOnlinePlayers()){
             p.playSound(p.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
             p.sendTitle(ChatColor.GREEN + "", "You will be teleported to your flag in 3 seconds", 0, 60, 5);

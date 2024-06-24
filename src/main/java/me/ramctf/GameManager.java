@@ -2,14 +2,13 @@ package me.ramctf;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.GameRule;
-import org.bukkit.entity.EntityType;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 public class GameManager {
     public static boolean isGameReadyToStart() {
@@ -48,14 +47,33 @@ public class GameManager {
     public static void endGame(){
         if(GameProperties.blueTeamScore() > GameProperties.redTeamScore()){
             Bukkit.broadcastMessage(ChatColor.GREEN + "Blue Team Wins!");
+            spawnFirework(GameProperties.blueFlagLocationBase());
 
         } else if(GameProperties.redTeamScore() > GameProperties.blueTeamScore()){
             Bukkit.broadcastMessage(ChatColor.GREEN + "Red Team Wins!");
+            spawnFirework(GameProperties.redFlagLocationBase());
             
         } else {
             Bukkit.broadcastMessage(ChatColor.GREEN + "Tie Game!");
         }
         GameProperties.resetAllGameProperties();
-        
+
+    }
+
+    private static void spawnFirework(Location location) {
+        World world = location.getWorld();
+        Firework firework = world.spawn(location, Firework.class);
+        FireworkMeta fireworkMeta = firework.getFireworkMeta();
+
+        // Customize the firework effect as desired
+        fireworkMeta.addEffect(FireworkEffect.builder()
+                .withColor(org.bukkit.Color.BLUE)
+                .with(FireworkEffect.Type.BALL)
+                .withFlicker()
+                .withTrail()
+                .build());
+        fireworkMeta.setPower(1);
+
+        firework.setFireworkMeta(fireworkMeta);
     }
 }
