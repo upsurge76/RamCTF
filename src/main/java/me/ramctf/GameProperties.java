@@ -21,6 +21,11 @@ public class GameProperties {
     private static Boolean blueFlagOnGround = false;
     private static Boolean redFlagOnGround = false;
 
+    private static Boolean pregamePlayerLootDrop = true;
+    private static Boolean flagBuildProtection = true;
+    private static Boolean doPregameHunger = true;
+    private static int flagProximityDistance = 15;
+
     private static Player blueFlagCarrier = null;
     private static Player redFlagCarrier = null;
 
@@ -37,10 +42,6 @@ public class GameProperties {
     public static synchronized void resetAllGameProperties() {
         pregameStarted = false;
         gameStarted = false;
-        teamSetupStarted = false;
-        teamSetupCompleted = false;
-        blueFlagLocationBase = null;
-        redFlagLocationBase = null;
         blueFlagCurrentLocation = null;
         redFlagCurrentLocation = null;
         blueFlagOnGround = false;
@@ -53,15 +54,31 @@ public class GameProperties {
         minutesUntilGameEnd = 0;
     }
 
+    public static synchronized int flagProximityDistance() {
+        return flagProximityDistance;
+    }
+
+    public static synchronized boolean doPregameHunger() {
+        return doPregameHunger;
+    }
+
+    public static synchronized boolean flagBuildProtection() {
+        return flagBuildProtection;
+    }
+
+    public static synchronized boolean pregamePlayerLootDrop() {
+        return pregamePlayerLootDrop;
+    }
+
     public static synchronized int flagAutorecoveryTimer() {
         return flagAutorecoveryTimer;
     }
 
-    public static synchronized boolean pregameStarted() {
+    public static synchronized boolean pregameRunning() {
         return pregameStarted;
     }
 
-    public static synchronized boolean gameStarted() {
+    public static synchronized boolean mainGameRunning() {
         return gameStarted;
     }
 
@@ -129,11 +146,27 @@ public class GameProperties {
         return minutesUntilGameEnd;
     }
 
-    public static synchronized void setPregameStarted(boolean pregameStarted) {
+    public static synchronized void setFlagProximityDistance(int flagProximityDistance) {
+        GameProperties.flagProximityDistance = flagProximityDistance;
+    }
+
+    public static synchronized void setDoPregameHunger(boolean doHunger) {
+        GameProperties.doPregameHunger = doHunger;
+    }
+
+    public static synchronized void setFlagBuildProtection(boolean flagBuildProtection) {
+        GameProperties.flagBuildProtection = flagBuildProtection;
+    }
+
+    public static synchronized void setPregamePlayerLootDrop(boolean playerLootDrop) {
+        GameProperties.pregamePlayerLootDrop = playerLootDrop;
+    }
+
+    public static synchronized void setPregameRunning(boolean pregameStarted) {
         GameProperties.pregameStarted = pregameStarted;
     }
 
-    public static synchronized void setGameStarted(boolean gameStarted) {
+    public static synchronized void setMainGameRunning(boolean gameStarted) {
         GameProperties.gameStarted = gameStarted;
     }
 

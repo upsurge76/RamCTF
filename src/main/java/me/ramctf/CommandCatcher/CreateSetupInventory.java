@@ -18,7 +18,7 @@ public class CreateSetupInventory implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if(sender instanceof Player){
             if(sender.isOp()){
-                if(!GameProperties.pregameStarted() && !GameProperties.gameStarted()){
+                if(!GameProperties.pregameRunning() && !GameProperties.mainGameRunning()){
                     Player p = (Player) sender;
                     SetupPage.ShowHomePage(p);
                     return true;

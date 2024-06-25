@@ -21,7 +21,7 @@ public class CreateTeamInventory implements CommandExecutor {
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 3);
                 return true;
             }
-            if(GameProperties.pregameStarted() || GameProperties.gameStarted()){
+            if(GameProperties.pregameRunning() || GameProperties.mainGameRunning()){
                 sender.sendMessage("Game has already started. You cannot change teams now.");
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 3);
                 return true;

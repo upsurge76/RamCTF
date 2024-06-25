@@ -59,14 +59,19 @@ public class SetupPage implements Listener{
                 if(GameManager.isGameReadyToStart()){
                     p.sendMessage(ChatColor.GREEN + "Game Started");
                     p.closeInventory();
-                    GameManager.startPregame();
+                    if(GameProperties.pregameTimer() > 0){
+                        GameManager.startPregame();
+                    } else {
+                        GameManager.startGame();
+                    }
+                    
 
                 } else {
                     p.sendMessage(ChatColor.RED + "Game not ready to start");
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
                 }
             }
-        }
+        } 
     }
 
     public static void ShowHomePage(Player p){

@@ -25,7 +25,12 @@ public class Runnable {
             public void run() {
 
                 Teams.updateScoreboard();
+                Teams.putArmorOnTeams();
 
+                if(GameProperties.pregamePlayerLootDrop() && GameProperties.pregameRunning() && !GameProperties.mainGameRunning()){
+                    FlagProximityWarning.calculateFlagPlayerProximity();
+                }
+                
                 for(Player p : Bukkit.getOnlinePlayers()){
                     if(GameProperties.blueFlagCarrier() != null && GameProperties.blueFlagCarrier().equals(p)){
                         DustOptions dustOptions = new DustOptions(Color.fromRGB(0, 0, 255), 1.0F);
@@ -89,9 +94,11 @@ public class Runnable {
                         p.teleport(GameProperties.redFlagLocationBase().clone().add(0, 1, 0.5));
                     }
                 }
-                cancel();
+                GameProperties.setPregameRunning(true);
                 displayGameStartMessage();
-                pregameTicksElapsed = 0;
+                pregameTicksElapsed = 1;
+                cancel();
+
                 }
 
             }.runTaskTimer(JavaPlugin.getPlugin(RamCTF.class), 60, 1);
@@ -114,12 +121,10 @@ public class Runnable {
             @Override
             public void run() {
                 pregameTicksElapsed++;
-                if(!GameProperties.pregameStarted()){
+                if(!GameProperties.pregameRunning()){
                     cancel(); //in case game is ended early
                 }
                 if(GameProperties.minutesUntilGameStart() == 0){
-                    GameProperties.setPregameStarted(false);
-                    GameProperties.setGameStarted(true);
                     pregameAlertPlayed = false;
                     GameManager.startGame();
                     cancel();
@@ -146,8 +151,8 @@ public class Runnable {
                 FlagLogic.calculateCaptures();
 
                 gameTicksElapsed++;
-                if(!GameProperties.gameStarted()){
-                    cancel(); //in case game is ended early
+                if(!GameProperties.mainGameRunning()){
+                    cancel();
                 }
                 if(GameProperties.minutesUntilGameEnd() == 0){
                     cancel(); 

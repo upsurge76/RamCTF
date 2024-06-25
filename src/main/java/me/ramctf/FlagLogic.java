@@ -3,12 +3,9 @@ package me.ramctf;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+
 
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -18,60 +15,6 @@ import net.md_5.bungee.api.ChatColor;
 public class FlagLogic implements Listener{
     
     private static int captureDistance = 1;
-
-    @EventHandler
-    public void onBlockBreak(BlockBreakEvent e) {
-        Block b = e.getBlock();
-        int x, z;
-
-        if(GameProperties.blueFlagLocationBase() != null){
-            x = Helpers.get3AxisDistance(b.getLocation(), GameProperties.blueFlagLocationBase())[0];
-            z = Helpers.get3AxisDistance(b.getLocation(), GameProperties.blueFlagLocationBase())[2];
-
-            if(x < 3 && z < 3){
-                e.setCancelled(true);
-            }
-        }
-
-        if(GameProperties.redFlagLocationBase() != null){
-            x = Helpers.get3AxisDistance(b.getLocation(), GameProperties.redFlagLocationBase())[0];
-            z = Helpers.get3AxisDistance(b.getLocation(), GameProperties.redFlagLocationBase())[2];
-
-            if(x < 3 && z < 3){
-                e.setCancelled(true);
-            }
-        }
-        
-        if(b.getLocation().equals(GameProperties.blueFlagCurrentLocation()) || b.getLocation().equals(GameProperties.redFlagCurrentLocation())){
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onBlockPlace(BlockPlaceEvent e){
-        Block b = e.getBlock();
-        
-        int x, z;
-
-        if(GameProperties.blueFlagLocationBase() != null){
-            x = Helpers.get3AxisDistance(b.getLocation(), GameProperties.blueFlagLocationBase())[0];
-            z = Helpers.get3AxisDistance(b.getLocation(), GameProperties.blueFlagLocationBase())[2];
-    
-            if(x < 3 && z < 3){
-                e.setCancelled(true);
-            }
-        }
-
-        if(GameProperties.redFlagLocationBase() != null){
-            x = Helpers.get3AxisDistance(b.getLocation(), GameProperties.redFlagLocationBase())[0];
-            z = Helpers.get3AxisDistance(b.getLocation(), GameProperties.redFlagLocationBase())[2];
-    
-            if(x < 3 && z < 3){
-                e.setCancelled(true);
-            }
-        }
-
-    }
 
     public static void calculateCaptures(){
         for(Player p: Bukkit.getOnlinePlayers()){

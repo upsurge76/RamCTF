@@ -3,10 +3,10 @@ package me.ramctf;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.FireworkEffect;
-import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Firework;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 
@@ -16,10 +16,7 @@ public class GameManager {
     }
 
     public static void startPregame() {
-        
-        Bukkit.getServer().getWorld("world").setGameRule(GameRule.KEEP_INVENTORY, true);
 
-        GameProperties.setPregameStarted(true);
         GameProperties.setBlueFlagOnGround(true);
         GameProperties.setRedFlagOnGround(true);
         GameProperties.setBlueFlagCurrentLocation(GameProperties.blueFlagLocationBase());
@@ -29,17 +26,27 @@ public class GameManager {
     }
 
     public static void startGame(){
-        GameProperties.setGameStarted(true);
-        GameProperties.setPregameStarted(false);
-
         GameProperties.setBlueFlagOnGround(true);
         GameProperties.setRedFlagOnGround(true);
         GameProperties.setBlueFlagCurrentLocation(GameProperties.blueFlagLocationBase());
         GameProperties.setRedFlagCurrentLocation(GameProperties.redFlagLocationBase());
 
-        GameProperties.setMinutesUntilGameStart(0);
-        GameProperties.setMinutesUntilGameEnd(GameProperties.gameTimer());
+        for(Player p : Bukkit.getOnlinePlayers()){
+            p.sendTitle(ChatColor.GREEN + "Game Started", "", 10, 60, 20);
+            p.playSound(p.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 1);
+            p.setHealth(20);
+            p.setFoodLevel(20);
+            if(Teams.getTeam(p).equals("Red")){
+                p.teleport(GameProperties.redFlagLocationBase().clone().add(0,.5,.5));
+            } else if(Teams.getTeam(p).equals("Blue")){
+                p.teleport(GameProperties.blueFlagLocationBase().clone().add(0,.5,.5));
+            } 
+        }
 
+        GameProperties.setMainGameRunning(true);
+        GameProperties.setPregameRunning(false);
+
+        GameProperties.setMinutesUntilGameEnd(GameProperties.gameTimer());
         Runnable.gameTimer(0, GameProperties.gameTimer());
 
     }
