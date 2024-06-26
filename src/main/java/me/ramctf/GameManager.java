@@ -63,7 +63,10 @@ public class GameManager {
         } else {
             Bukkit.broadcastMessage(ChatColor.GREEN + "Tie Game!");
         }
+        FlagLogic.removeBlueFlag(GameProperties.blueFlagCurrentLocation());
+        FlagLogic.removeRedFlag(GameProperties.redFlagCurrentLocation());
         GameProperties.resetAllGameProperties();
+       
 
     }
 

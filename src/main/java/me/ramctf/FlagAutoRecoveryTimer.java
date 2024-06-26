@@ -11,55 +11,60 @@ import org.bukkit.scheduler.BukkitRunnable;
 import net.md_5.bungee.api.ChatColor;
 
 public class FlagAutoRecoveryTimer {
+    public static BossBar redBossBar = Bukkit.createBossBar(ChatColor.RED + "Red Flag Will Be Automatically Recovered in " + GameProperties.flagAutorecoveryTimer() + " seconds", BarColor.RED, BarStyle.SOLID);
+    public static BossBar blueBossBar = Bukkit.createBossBar(ChatColor.BLUE + "Blue Flag Will Be Automatically Recovered in " + GameProperties.flagAutorecoveryTimer() + " seconds", BarColor.BLUE, BarStyle.SOLID);
+    
+    
     public static void startFlagTimer(String flag){
+
         if(flag.equals("Blue")){
-            BossBar bossBar = Bukkit.createBossBar(ChatColor.BLUE + "Blue Flag Will Be Automatically Recovered in " + GameProperties.flagAutorecoveryTimer() + " seconds", BarColor.BLUE, BarStyle.SOLID);
-            bossBar.setProgress(1);
+            blueBossBar.setProgress(1);
             for(Player p : Bukkit.getOnlinePlayers()){
-                bossBar.addPlayer(p);
+                blueBossBar.addPlayer(p);
             }
             new BukkitRunnable() {
             int timer = GameProperties.flagAutorecoveryTimer();
             @Override
             public void run() {
+                blueBossBar.setProgress(timer / (double)GameProperties.flagAutorecoveryTimer());
+                timer -= 1;
                 if(GameProperties.blueFlagLocationBase().equals(GameProperties.blueFlagCurrentLocation())){
-                    bossBar.removeAll();
+                    blueBossBar.removeAll();
                     cancel();
                 }
                 if(timer == 0){
-                    bossBar.removeAll();
-                    FlagLogic.removeRedFlag(GameProperties.redFlagCurrentLocation());
-                    GameProperties.setRedFlagCurrentLocation(GameProperties.redFlagLocationBase());
+                    blueBossBar.removeAll();
+                    FlagLogic.removeBlueFlag(GameProperties.blueFlagCurrentLocation());
+                    GameProperties.setBlueFlagCurrentLocation(GameProperties.blueFlagLocationBase());
+                    Teams.broadcastMessage(ChatColor.RED + "Enemy flag has timed out", "Red");
                     Teams.broadcastMessage(ChatColor.GREEN + "Your flag has been recovered", "Blue");
-                    cancel();
                 }
-                bossBar.setProgress(timer / (double)GameProperties.flagAutorecoveryTimer());
-                timer -= 1;
             }
             }.runTaskTimer(JavaPlugin.getPlugin(RamCTF.class), 0, 20);
 
         } else if(flag.equals("Red")){
-            BossBar bossBar = Bukkit.createBossBar(ChatColor.RED + "Red Flag Will Be Automatically Recovered in " + GameProperties.flagAutorecoveryTimer() + " seconds", BarColor.RED, BarStyle.SOLID);
-            bossBar.setProgress(1);
+            redBossBar.setProgress(1);
             for(Player p : Bukkit.getOnlinePlayers()){
-                bossBar.addPlayer(p);
+                redBossBar.addPlayer(p);
             }
             new BukkitRunnable() {
             int timer = GameProperties.flagAutorecoveryTimer();
             @Override
             public void run() {
+                redBossBar.setProgress(timer / (double)GameProperties.flagAutorecoveryTimer());
+                timer -= 1;
                 if(GameProperties.redFlagLocationBase().equals(GameProperties.redFlagCurrentLocation())){
-                    bossBar.removeAll();
+                    redBossBar.removeAll();
                     cancel();
                 }
                 if(timer == 0){
+                    redBossBar.removeAll();
                     FlagLogic.removeRedFlag(GameProperties.redFlagCurrentLocation());
                     GameProperties.setRedFlagCurrentLocation(GameProperties.redFlagLocationBase());
+                    Teams.broadcastMessage(ChatColor.RED + "Enemy flag has timed out", "Blue");
                     Teams.broadcastMessage(ChatColor.GREEN + "Your flag has been recovered", "Red");
                     cancel();
                 }
-                bossBar.setProgress(timer / (double)GameProperties.flagAutorecoveryTimer());
-                timer -= 1;
             }
             }.runTaskTimer(JavaPlugin.getPlugin(RamCTF.class), 0, 20);
         }

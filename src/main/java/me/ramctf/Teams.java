@@ -66,11 +66,11 @@ public class Teams implements Listener{
         for(Player p : Bukkit.getOnlinePlayers()){
             if(team.equalsIgnoreCase("Red")){
                 if(red.hasEntry(p.getName())){
-                    p.sendTitle(message, "", 10, 70, 20);          
+                    p.sendTitle(message, "", 10, 50, 20);          
                 }
             } else if(team.equalsIgnoreCase("Blue")){
                 if(blue.hasEntry(p.getName())){
-                    p.sendTitle(message, "", 10, 70, 20);
+                    p.sendTitle(message, "", 10, 50, 20);
                 }
             }
         }
@@ -81,11 +81,11 @@ public class Teams implements Listener{
             if(!p.equals(ignorePlayer)){
                 if(team.equalsIgnoreCase("Red")){
                     if(red.hasEntry(p.getName())){
-                        p.sendTitle(message, "", 10, 70, 20);          
+                        p.sendTitle(message, "", 10, 50, 20);          
                     }
                 } else if(team.equalsIgnoreCase("Blue")){
                     if(blue.hasEntry(p.getName())){
-                        p.sendTitle(message, "", 10, 70, 20);
+                        p.sendTitle(message, "", 10, 50, 20);
                     }
                 }
             }
