@@ -1,6 +1,6 @@
 
 
-![App Screenshot](https://media.discordapp.net/attachments/928131884247036015/1254611031896887296/2024-06-23_20.29.18.png?ex=667a1f13&is=6678cd93&hm=353663255879421708675aa8c9a9929901d65e210701f577eea76cbfe3e99c93&=&format=webp&quality=lossless&width=1606&height=903)
+![App Screenshot](https://media.discordapp.net/attachments/928131884247036015/1254611031896887296/2024-06-23_20.29.18.png?ex=66a84393&is=66a6f213&hm=6dc9ed771c40dc8f910b39a66fa2c4011668f012dc376d20fc0b9195b1e95a04&=&format=webp&quality=lossless&width=1166&height=656)
 
 
 # RAM CTF
