@@ -31,7 +31,7 @@ public class GameSettingsPage implements Listener{
             if(clickedItem.getType() == Material.ENDER_EYE){
                 SetupPage.ShowHomePage(p);
             } else if(clickedItem.getType() == Material.CLOCK){
-                if(clickedItem.getItemMeta().getDisplayName().equals(ChatColor.WHITE + "Game Start Delay")){
+                if(clickedItem.getItemMeta().getDisplayName().equals(ChatColor.WHITE + "Pregame Duration")){
                     PregameDelaySettingsPage.ShowHomePage(p);
                 }
                 if(clickedItem.getItemMeta().getDisplayName().equals(ChatColor.WHITE + "Game Duration")){

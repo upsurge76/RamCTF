@@ -49,14 +49,18 @@ public class FlagLogic implements Listener{
     }
 
     public static void removeBlueFlag(Location loc){
-        loc.getBlock().setType(org.bukkit.Material.AIR);
+        if (loc != null){
+            loc.getBlock().setType(org.bukkit.Material.AIR);
+        }
     }
 
     public static void removeRedFlag(Location loc){
-        loc.getBlock().setType(org.bukkit.Material.AIR);
+        if (loc != null){
+            loc.getBlock().setType(org.bukkit.Material.AIR);
+        }
     }
 
-    public static boolean playerCanRecoverThisFlag(Player p, String team){
+    private static boolean playerCanRecoverThisFlag(Player p, String team){
         if(p.isDead() || p.getGameMode() == GameMode.SPECTATOR){
             return false;
         }
@@ -89,7 +93,7 @@ public class FlagLogic implements Listener{
 
     
 
-    public static boolean playerCanStealThisFlag(Player p, String flag){
+    private static boolean playerCanStealThisFlag(Player p, String flag){
         if(p.isDead() || p.getGameMode() == GameMode.SPECTATOR){
             return false;
         }
@@ -205,4 +209,5 @@ public class FlagLogic implements Listener{
         Teams.broadcastMessage(p.getName() + ChatColor.GREEN + " captured enemy flag", "Red");
         Teams.broadcastMessage(p.getName() + ChatColor.RED + " captured your flag", "Blue");
     }
+
 }

@@ -26,6 +26,7 @@ public class Runnable {
 
                 Teams.updateScoreboard();
                 Teams.putArmorOnTeams();
+                
 
                 if(GameProperties.pregamePlayerLootDrop() && GameProperties.pregameRunning() && !GameProperties.mainGameRunning()){
                     FlagProximityWarning.calculateFlagPlayerProximity();
@@ -42,16 +43,18 @@ public class Runnable {
                     }
                 }
 
-                if(GameProperties.blueFlagLocationBase() != null && (!GameProperties.blueFlagLocationBase().equals(GameProperties.blueFlagCurrentLocation()))){
-                    DustOptions dustOptions = new DustOptions(Color.fromRGB(0, 0, 255), 1.0F);
-                    Location particleLocation = GameProperties.blueFlagLocationBase().clone().add(0, 1, 0);
-                    particleLocation.getWorld().spawnParticle(Particle.REDSTONE, particleLocation, 25, 0.2, 0.4, 0.2, dustOptions);
+                if(!GameProperties.hideScoreboardAndParticles()){
+                    if(GameProperties.blueFlagLocationBase() != null && (!GameProperties.blueFlagLocationBase().equals(GameProperties.blueFlagCurrentLocation()))){
+                        DustOptions dustOptions = new DustOptions(Color.fromRGB(0, 0, 255), 1.0F);
+                        Location particleLocation = GameProperties.blueFlagLocationBase().clone().add(0, 1, 0);
+                        particleLocation.getWorld().spawnParticle(Particle.REDSTONE, particleLocation, 25, 0.2, 0.4, 0.2, dustOptions);
 
-                }
-                if(GameProperties.redFlagLocationBase() != null && (!GameProperties.redFlagLocationBase().equals(GameProperties.redFlagCurrentLocation()))){
-                    DustOptions dustOptions = new DustOptions(Color.fromRGB(255, 0, 0), 1.0F);
-                    Location particleLocation = GameProperties.redFlagLocationBase().clone().add(0, 1, 0);
-                    particleLocation.getWorld().spawnParticle(Particle.REDSTONE, particleLocation, 25, 0.2, 0.4, 0.2, dustOptions);
+                    }
+                    if(GameProperties.redFlagLocationBase() != null && (!GameProperties.redFlagLocationBase().equals(GameProperties.redFlagCurrentLocation()))){
+                        DustOptions dustOptions = new DustOptions(Color.fromRGB(255, 0, 0), 1.0F);
+                        Location particleLocation = GameProperties.redFlagLocationBase().clone().add(0, 1, 0);
+                        particleLocation.getWorld().spawnParticle(Particle.REDSTONE, particleLocation, 25, 0.2, 0.4, 0.2, dustOptions);
+                    }
                 }
                 if(GameProperties.blueFlagOnGround() && (!GameProperties.blueFlagLocationBase().equals(GameProperties.blueFlagCurrentLocation()))){
                     for(int i = 5; i < 100; i+=1){
@@ -120,15 +123,18 @@ public class Runnable {
         new BukkitRunnable() {
             @Override
             public void run() {
-                pregameTicksElapsed++;
+
+                if(!GameProperties.isGamePaused()){
+                   pregameTicksElapsed++;
+                }
+
                 if(!GameProperties.pregameRunning()){
-                    cancel(); //in case game is ended early
+                    cancel();
                 }
                 if(GameProperties.minutesUntilGameStart() == 0){
                     pregameAlertPlayed = false;
                     GameManager.startGame();
                     cancel();
-
                 }
                 if(pregameTicksElapsed % (20*60) == 0){
                     GameProperties.setMinutesUntilGameStart(GameProperties.minutesUntilGameStart() - 1);
@@ -148,13 +154,16 @@ public class Runnable {
         new BukkitRunnable() {
             @Override
             public void run() {
-                FlagLogic.calculateCaptures();
 
-                gameTicksElapsed++;
+                if(!GameProperties.isGamePaused()){
+                    FlagLogic.calculateCaptures();
+                    gameTicksElapsed++;
+                }
                 if(!GameProperties.mainGameRunning()){
                     cancel();
                 }
                 if(GameProperties.minutesUntilGameEnd() == 0){
+                    GameManager.endGame();
                     cancel(); 
                 }
                 if(gameTicksElapsed % (20*60) == 0){

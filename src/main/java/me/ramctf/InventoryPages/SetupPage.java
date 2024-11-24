@@ -27,6 +27,7 @@ public class SetupPage implements Listener{
             if(clickedItem == null || clickedItem.getType() == Material.AIR){
                 return;
             }
+
             if(clickedItem.getType() == Material.BLUE_BANNER){
                 p.sendMessage(ChatColor.GREEN + "Blue Flag Location Set");
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3);
@@ -59,20 +60,32 @@ public class SetupPage implements Listener{
                 if(GameManager.isGameReadyToStart()){
                     p.sendMessage(ChatColor.GREEN + "Game Started");
                     p.closeInventory();
+
+                    GameProperties.setBlueTeamScore(0);
+                    GameProperties.setRedTeamScore(0);
+                    GameProperties.setHideScoreboardAndParticles(false);
+
                     if(GameProperties.pregameTimer() > 0){
                         GameManager.startPregame();
                     } else {
                         GameManager.startGame();
                     }
-                    
-
+                }
+            } else if(clickedItem.getType() == Material.PAPER){
+                if(GameProperties.hideScoreboardAndParticles()){
+                    GameProperties.setHideScoreboardAndParticles(false);
+                    p.sendMessage(ChatColor.GREEN + "Scoreboard and Particles Shown");
                 } else {
+                    GameProperties.setHideScoreboardAndParticles(true);
+                    p.sendMessage(ChatColor.GREEN + "Scoreboard and Particles Hidden");
+                }
+                SetupPage.ShowHomePage(p);
+            } else {
                     p.sendMessage(ChatColor.RED + "Game not ready to start");
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
-                }
             }
-        } 
-    }
+        }
+    } 
 
     public static void ShowHomePage(Player p){
         Inventory inv = Bukkit.createInventory(p, 18, inventoryName);
@@ -83,6 +96,7 @@ public class SetupPage implements Listener{
         inv.setItem(0, InventorySlotsSetup.getBlueFlagSlot());
         inv.setItem(1, InventorySlotsSetup.getRedFlagSlot());
         inv.setItem(4, InventorySlotsSetup.getStartButton());
+        inv.setItem(5, InventorySlotsSetup.getHideParticlesAndScoreboard());
         inv.setItem(8, InventorySlotsSetup.getTeamSetupSlot());
         inv.setItem(9, InventorySlotsSetup.getBlueFlagStatus());
         inv.setItem(10, InventorySlotsSetup.getRedFlagStatus());

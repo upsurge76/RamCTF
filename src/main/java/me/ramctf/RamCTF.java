@@ -27,6 +27,7 @@ public class RamCTF extends JavaPlugin {
 
         Teams.initializeTeams();
         Runnable.runEvery2Ticks();
-        // Helpers.debug();
+        // Helpers.debug();//debug
+
     }
 }

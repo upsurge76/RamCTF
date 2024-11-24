@@ -20,7 +20,7 @@ public class InventorySlotsSettings {
     public static ItemStack getSettingsPregameTimeSlot(){
         ItemStack clock = new ItemStack(Material.CLOCK);
         ItemMeta clockMeta = clock.getItemMeta();
-        clockMeta.setDisplayName(ChatColor.WHITE + "Game Start Delay");
+        clockMeta.setDisplayName(ChatColor.WHITE + "Pregame Duration");
         clock.setItemMeta(clockMeta);
         return clock;
     }

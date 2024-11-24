@@ -10,13 +10,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class Helpers {
     public static int[] get3AxisDistance(Location loc1, Location loc2) {
         
-        int x = Math.abs(Math.abs(loc1.getBlockX()) - Math.abs(loc2.getBlockX()));
-        int y = Math.abs(Math.abs(loc1.getBlockY()) - Math.abs(loc2.getBlockY()));
-        int z = Math.abs(Math.abs(loc1.getBlockZ()) - Math.abs(loc2.getBlockZ()));
+        int x = Math.abs(loc1.getBlockX() - loc2.getBlockX());
+        int y = Math.abs(loc1.getBlockY() - loc2.getBlockY());
+        int z = Math.abs(loc1.getBlockZ() - loc2.getBlockZ());
         return new int[]{x, y, z};
     }
-
-    
 
     public static void playVictory(Player p){
         new BukkitRunnable() {
@@ -50,6 +48,7 @@ public class Helpers {
         }.runTaskTimer(JavaPlugin.getPlugin(RamCTF.class), 0, 5);  
     }
 
+
     public static boolean withinDistance(Location loc1, Location loc2, int distance) {
         if(loc1 == null || loc2 == null) return false;
         int[] axis = get3AxisDistance(loc1, loc2);
@@ -62,7 +61,7 @@ public class Helpers {
         e.getDrops().clear();
         e.setDroppedExp(0);
     }
-    
+
     public static void debug(){
         new BukkitRunnable() {
             @Override

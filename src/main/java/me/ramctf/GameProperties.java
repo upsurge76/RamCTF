@@ -6,6 +6,8 @@ public class GameProperties {
 
     private GameProperties() {}
 
+    private static boolean gamePaused = false;
+
     private static boolean pregameStarted = false;
     private static boolean gameStarted = false;
 
@@ -24,6 +26,7 @@ public class GameProperties {
     private static Boolean pregamePlayerLootDrop = true;
     private static Boolean flagBuildProtection = true;
     private static Boolean doPregameHunger = true;
+    private static Boolean hideScoreboardAndParticles = false;
     private static int flagProximityDistance = 15;
 
     private static Player blueFlagCarrier = null;
@@ -39,19 +42,8 @@ public class GameProperties {
     private static int minutesUntilGameStart = 0;
     private static int minutesUntilGameEnd = 0;
 
-    public static synchronized void resetAllGameProperties() {
-        pregameStarted = false;
-        gameStarted = false;
-        blueFlagCurrentLocation = null;
-        redFlagCurrentLocation = null;
-        blueFlagOnGround = false;
-        redFlagOnGround = false;
-        blueFlagCarrier = null;
-        redFlagCarrier = null;
-        redTeamScore = 0;
-        blueTeamScore = 0;
-        minutesUntilGameStart = 0;
-        minutesUntilGameEnd = 0;
+    public static synchronized boolean isGamePaused() {
+        return gamePaused;
     }
 
     public static synchronized int flagProximityDistance() {
@@ -60,6 +52,10 @@ public class GameProperties {
 
     public static synchronized boolean doPregameHunger() {
         return doPregameHunger;
+    }
+
+    public static synchronized boolean hideScoreboardAndParticles() {
+        return hideScoreboardAndParticles;
     }
 
     public static synchronized boolean flagBuildProtection() {
@@ -146,12 +142,20 @@ public class GameProperties {
         return minutesUntilGameEnd;
     }
 
+    public static synchronized void setGamePaused(boolean gamePaused) {
+        GameProperties.gamePaused = gamePaused;
+    }
+
     public static synchronized void setFlagProximityDistance(int flagProximityDistance) {
         GameProperties.flagProximityDistance = flagProximityDistance;
     }
 
     public static synchronized void setDoPregameHunger(boolean doHunger) {
         GameProperties.doPregameHunger = doHunger;
+    }
+
+    public static synchronized void setHideScoreboardAndParticles(boolean hideScoreboardAndParticles) {
+        GameProperties.hideScoreboardAndParticles = hideScoreboardAndParticles;
     }
 
     public static synchronized void setFlagBuildProtection(boolean flagBuildProtection) {

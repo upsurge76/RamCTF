@@ -8,6 +8,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.potion.PotionEffectType;
 
 
 public class GameManager {
@@ -21,7 +22,6 @@ public class GameManager {
         GameProperties.setRedFlagOnGround(true);
         GameProperties.setBlueFlagCurrentLocation(GameProperties.blueFlagLocationBase());
         GameProperties.setRedFlagCurrentLocation(GameProperties.redFlagLocationBase());
-        
         Runnable.teleportCountDownDelay();
     }
 
@@ -50,8 +50,46 @@ public class GameManager {
         Runnable.gameTimer(0, GameProperties.gameTimer());
 
     }
+
+    public static void pauseGame(){
+        GameProperties.setGamePaused(true);
+        if (GameProperties.pregameRunning()) {
+            Bukkit.broadcastMessage(ChatColor.GREEN + "Pregame Paused");
+        } else {
+            Bukkit.broadcastMessage(ChatColor.GREEN + "Game Paused");
+        }
+    }
+
+    public static void resumeGame(){
+        GameProperties.setGamePaused(false);
+        if (GameProperties.pregameRunning()) {
+            Bukkit.broadcastMessage(ChatColor.GREEN + "Pregame Resumed");
+        } else {
+            Bukkit.broadcastMessage(ChatColor.GREEN + "Game Resumed");
+        }
+    }
     
     public static void endGame(){
+        for(Player p : Bukkit.getOnlinePlayers()){
+            p.removePotionEffect(PotionEffectType.GLOWING);
+        }
+
+        GameProperties.setBlueFlagCarrier(null);
+        GameProperties.setRedFlagCarrier(null);
+
+        FlagLogic.removeBlueFlag(GameProperties.blueFlagCurrentLocation());
+        FlagLogic.removeRedFlag(GameProperties.redFlagCurrentLocation());
+        
+        GameProperties.setRedFlagCurrentLocation(null);
+        GameProperties.setBlueFlagCurrentLocation(null);
+
+        GameProperties.setRedFlagOnGround(false);
+        GameProperties.setBlueFlagOnGround(false);
+
+        GameProperties.setMainGameRunning(false);
+        GameProperties.setPregameRunning(false);
+        GameProperties.setGamePaused(false);
+
         if(GameProperties.blueTeamScore() > GameProperties.redTeamScore()){
             Bukkit.broadcastMessage(ChatColor.GREEN + "Blue Team Wins!");
             spawnFirework(GameProperties.blueFlagLocationBase());
@@ -63,11 +101,8 @@ public class GameManager {
         } else {
             Bukkit.broadcastMessage(ChatColor.GREEN + "Tie Game!");
         }
-        FlagLogic.removeBlueFlag(GameProperties.blueFlagCurrentLocation());
-        FlagLogic.removeRedFlag(GameProperties.redFlagCurrentLocation());
-        GameProperties.resetAllGameProperties();
-       
 
+       
     }
 
     private static void spawnFirework(Location location) {
@@ -75,7 +110,6 @@ public class GameManager {
         Firework firework = world.spawn(location, Firework.class);
         FireworkMeta fireworkMeta = firework.getFireworkMeta();
 
-        // Customize the firework effect as desired
         fireworkMeta.addEffect(FireworkEffect.builder()
                 .withColor(org.bukkit.Color.BLUE)
                 .with(FireworkEffect.Type.BALL)
