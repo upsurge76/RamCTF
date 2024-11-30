@@ -120,6 +120,54 @@ public class InventorySlotsSettings {
         }
     }
 
+    public static ItemStack getSettingsCleanInventoryAfterGameEnd(){
+        ItemStack stringItemStack = new ItemStack(Material.STRING);
+        ItemMeta stringItemStackMeta = stringItemStack.getItemMeta();
+        stringItemStackMeta.setDisplayName(ChatColor.WHITE + "Keep Inventory After Game");
+        stringItemStack.setItemMeta(stringItemStackMeta);
+        return stringItemStack;
+    }
+
+    public static ItemStack getSettingsCleanInventoryAfterGameEndInfoSlot(){
+        if(GameProperties.clearInventoryAfterGameEnd()){
+            ItemStack greenStainedGlassPane = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
+            ItemMeta greenStainedGlassPaneMeta = greenStainedGlassPane.getItemMeta();
+            greenStainedGlassPaneMeta.setDisplayName(ChatColor.WHITE + "Inventory will be cleared after game ends");
+            greenStainedGlassPane.setItemMeta(greenStainedGlassPaneMeta);
+            return greenStainedGlassPane;
+        } else {
+            ItemStack redStainedGlassPane = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+            ItemMeta redStainedGlassPaneMeta = redStainedGlassPane.getItemMeta();
+            redStainedGlassPaneMeta.setDisplayName(ChatColor.WHITE + "Inventory will be kept after game ends");
+            redStainedGlassPane.setItemMeta(redStainedGlassPaneMeta);
+            return redStainedGlassPane;
+        }
+    }
+
+    public static ItemStack getSettingsTeleportAfterGameEnd(){
+        ItemStack enderPearlItemStack = new ItemStack(Material.ENDER_PEARL);
+        ItemMeta enderPearlItemStackMeta = enderPearlItemStack.getItemMeta();
+        enderPearlItemStackMeta.setDisplayName(ChatColor.WHITE + "Teleport to team flags after game ends");
+        enderPearlItemStack.setItemMeta(enderPearlItemStackMeta);
+        return enderPearlItemStack;
+    }
+
+    public static ItemStack getSettingsTeleportAfterGameEndInfoSlot(){
+        if(GameProperties.teleportAfterGameEnd()){
+            ItemStack greenStainedGlassPane = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
+            ItemMeta greenStainedGlassPaneMeta = greenStainedGlassPane.getItemMeta();
+            greenStainedGlassPaneMeta.setDisplayName(ChatColor.WHITE + "Players will be teleported to team flags after game ends");
+            greenStainedGlassPane.setItemMeta(greenStainedGlassPaneMeta);
+            return greenStainedGlassPane;
+        } else {
+            ItemStack redStainedGlassPane = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+            ItemMeta redStainedGlassPaneMeta = redStainedGlassPane.getItemMeta();
+            redStainedGlassPaneMeta.setDisplayName(ChatColor.WHITE + "Players will not be teleported after game ends");
+            redStainedGlassPane.setItemMeta(redStainedGlassPaneMeta);
+            return redStainedGlassPane;
+        }
+    }
+
     public static ItemStack getGlassPane(){
         ItemStack glasspane = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta glasspaneMeta = glasspane.getItemMeta();

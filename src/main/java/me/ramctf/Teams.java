@@ -112,29 +112,28 @@ public class Teams implements Listener{
         for(Player p : Bukkit.getOnlinePlayers()){
             if(GameProperties.hideScoreboardAndParticles()){
                 p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-                return;
-            }
-
-            RedInfo.setSuffix(ChatColor.GOLD + Integer.toString(GameProperties.redTeamScore()));
-            BlueInfo.setSuffix(ChatColor.GOLD + Integer.toString(GameProperties.blueTeamScore()));
-
-            if(GameProperties.pregameRunning()){
-                if(GameProperties.isGamePaused()){
-                    GameInfo.setSuffix(ChatColor.GREEN + "Pregame Paused - " + ChatColor.GOLD + GameProperties.minutesUntilGameStart() + " minutes left");
-                } else {
-                    GameInfo.setSuffix(ChatColor.GREEN + "Pregame Ending in " + ChatColor.GOLD + GameProperties.minutesUntilGameStart() + " minutes");
-                }
-            } else if(GameProperties.mainGameRunning()){
-                if(GameProperties.isGamePaused()){
-                    GameInfo.setSuffix(ChatColor.GREEN + "Game Paused - " + ChatColor.GOLD + GameProperties.minutesUntilGameEnd() + " minutes left");
-                } else {
-                    GameInfo.setSuffix(ChatColor.GREEN + "Game Ending in " + ChatColor.GOLD + GameProperties.minutesUntilGameEnd() + " minutes");
-                } 
             } else {
-                GameInfo.setSuffix(ChatColor.GREEN + "No Game Running");
-            }
+                RedInfo.setSuffix(ChatColor.GOLD + Integer.toString(GameProperties.redTeamScore()));
+                BlueInfo.setSuffix(ChatColor.GOLD + Integer.toString(GameProperties.blueTeamScore()));
 
-            p.setScoreboard(board);
+                if(GameProperties.pregameRunning()){
+                    if(GameProperties.isGamePaused()){
+                        GameInfo.setSuffix(ChatColor.GREEN + "Pregame Paused - " + ChatColor.GOLD + GameProperties.minutesUntilGameStart() + " minutes left");
+                    } else {
+                        GameInfo.setSuffix(ChatColor.GREEN + "Pregame Ending in " + ChatColor.GOLD + GameProperties.minutesUntilGameStart() + " minutes");
+                    }
+                } else if(GameProperties.mainGameRunning()){
+                    if(GameProperties.isGamePaused()){
+                        GameInfo.setSuffix(ChatColor.GREEN + "Game Paused - " + ChatColor.GOLD + GameProperties.minutesUntilGameEnd() + " minutes left");
+                    } else {
+                        GameInfo.setSuffix(ChatColor.GREEN + "Game Ending in " + ChatColor.GOLD + GameProperties.minutesUntilGameEnd() + " minutes");
+                    } 
+                } else {
+                    GameInfo.setSuffix(ChatColor.GREEN + "No Game Running");
+                }
+
+                p.setScoreboard(board);
+            }
         }
     }
 

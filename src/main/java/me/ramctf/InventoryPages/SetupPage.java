@@ -31,14 +31,14 @@ public class SetupPage implements Listener{
             if(clickedItem.getType() == Material.BLUE_BANNER){
                 p.sendMessage(ChatColor.GREEN + "Blue Flag Location Set");
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3);
-                p.closeInventory();
                 GameProperties.setBlueFlagLocationBase(new Location(p.getWorld(), p.getLocation().getBlockX()+.5, p.getLocation().getBlockY(), p.getLocation().getBlockZ()+.5));
+                SetupPage.ShowHomePage(p);
             
             } else if(clickedItem.getType() == Material.RED_BANNER){
                 p.sendMessage(ChatColor.GREEN + "Red Flag Location Set");
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3);
-                p.closeInventory();
                 GameProperties.setRedFlagLocationBase(new Location(p.getWorld(), p.getLocation().getBlockX()+.5, p.getLocation().getBlockY(), p.getLocation().getBlockZ()+.5));
+                SetupPage.ShowHomePage(p);
 
             } else if(clickedItem.getType() == Material.LEATHER_CHESTPLATE){
                 if(!GameProperties.teamSetupStarted()){
@@ -80,9 +80,6 @@ public class SetupPage implements Listener{
                     p.sendMessage(ChatColor.GREEN + "Scoreboard and Particles Hidden");
                 }
                 SetupPage.ShowHomePage(p);
-            } else {
-                    p.sendMessage(ChatColor.RED + "Game not ready to start");
-                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
             }
         }
     } 
@@ -101,6 +98,7 @@ public class SetupPage implements Listener{
         inv.setItem(9, InventorySlotsSetup.getBlueFlagStatus());
         inv.setItem(10, InventorySlotsSetup.getRedFlagStatus());
         inv.setItem(13, InventorySlotsSetup.getSettingsSlot());
+        inv.setItem(14, InventorySlotsSetup.getHideParticlesAndScoreboardInfo());
         inv.setItem(17, InventorySlotsSetup.getTeamSetupStatus());
         
         p.openInventory(inv);

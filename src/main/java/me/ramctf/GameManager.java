@@ -102,6 +102,22 @@ public class GameManager {
             Bukkit.broadcastMessage(ChatColor.GREEN + "Tie Game!");
         }
 
+        if(GameProperties.clearInventoryAfterGameEnd()){
+            for(Player p : Bukkit.getOnlinePlayers()){
+                p.getInventory().clear();
+            }
+        }
+
+        if(GameProperties.teleportAfterGameEnd()){
+            for(Player p : Bukkit.getOnlinePlayers()){
+                if(Teams.getTeam(p).equals("Red")){
+                    p.teleport(GameProperties.redFlagLocationBase().clone().add(0,.5,.5));
+                } else if(Teams.getTeam(p).equals("Blue")){
+                    p.teleport(GameProperties.blueFlagLocationBase().clone().add(0,.5,.5));
+                }
+            }
+        }
+
        
     }
 

@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -52,19 +53,35 @@ public class DeathHandler implements Listener{
         if(GameProperties.blueFlagCarrier() != null){
             if(GameProperties.blueFlagCarrier().equals(p)){
                 GameProperties.setBlueFlagCarrier(null);
-                GameProperties.setBlueFlagCurrentLocation(p.getLocation().getBlock().getLocation());
                 GameProperties.setBlueFlagOnGround(true);
-                Teams.broadcastMessage(ChatColor.GREEN + p.getName() + " dropped your flag", "Red", p);
-                FlagAutoRecoveryTimer.startFlagTimer("Blue");
+                if(p.getLastDamageCause().getCause() != EntityDamageEvent.DamageCause.VOID){
+                    GameProperties.setBlueFlagCurrentLocation(p.getLocation().getBlock().getLocation());
+                    Teams.broadcastMessage(ChatColor.GREEN + p.getName() + " dropped your flag", "Red", p);
+                    Teams.broadcastMessage(ChatColor.RED + p.getName() + " dropped enemy flag", "Blue", p);
+                    FlagAutoRecoveryTimer.startFlagTimer("Blue");
+                } else {
+                    GameProperties.setBlueFlagCurrentLocation(GameProperties.blueFlagLocationBase());
+                    Teams.broadcastMessage(ChatColor.GREEN + p.getName() + " died in void. Flag recovered", "Red", p);
+                    Teams.broadcastMessage(ChatColor.RED + p.getName() + " died in void. Enemy flag at base", "Blue", p);
+                }
+
             }
         }
         if(GameProperties.redFlagCarrier() != null){
             if(GameProperties.redFlagCarrier().equals(p)){
                 GameProperties.setRedFlagCarrier(null);
-                GameProperties.setRedFlagCurrentLocation(p.getLocation().getBlock().getLocation());
                 GameProperties.setRedFlagOnGround(true);
-                Teams.broadcastMessage(ChatColor.GREEN + p.getName() + " dropped your flag", "Blue", p); 
-                FlagAutoRecoveryTimer.startFlagTimer("Red");
+                
+                if(p.getLastDamageCause().getCause() != EntityDamageEvent.DamageCause.VOID){
+                    GameProperties.setRedFlagCurrentLocation(p.getLocation().getBlock().getLocation());
+                    Teams.broadcastMessage(ChatColor.GREEN + p.getName() + " dropped your flag", "Blue", p);
+                    Teams.broadcastMessage(ChatColor.RED + p.getName() + " dropped enemy flag", "Red", p);
+                    FlagAutoRecoveryTimer.startFlagTimer("Red");
+                } else {
+                    GameProperties.setRedFlagCurrentLocation(GameProperties.redFlagLocationBase());
+                    Teams.broadcastMessage(ChatColor.GREEN + p.getName() + " died in void. Flag recovered", "Blue", p);
+                    Teams.broadcastMessage(ChatColor.RED + p.getName() + " died in void. Enemy flag at base", "Red", p);
+                }
             }
         } 
     }

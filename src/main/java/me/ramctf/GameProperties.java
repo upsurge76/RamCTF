@@ -27,6 +27,9 @@ public class GameProperties {
     private static Boolean flagBuildProtection = true;
     private static Boolean doPregameHunger = true;
     private static Boolean hideScoreboardAndParticles = false;
+    private static Boolean clearInventoryAfterGameEnd = true;
+    private static Boolean teleportAfterGameEnd = true;
+
     private static int flagProximityDistance = 15;
 
     private static Player blueFlagCarrier = null;
@@ -41,6 +44,14 @@ public class GameProperties {
 
     private static int minutesUntilGameStart = 0;
     private static int minutesUntilGameEnd = 0;
+
+    public static synchronized boolean teleportAfterGameEnd() {
+        return teleportAfterGameEnd;
+    }
+
+    public static synchronized boolean clearInventoryAfterGameEnd() {
+        return clearInventoryAfterGameEnd;
+    }
 
     public static synchronized boolean isGamePaused() {
         return gamePaused;
@@ -140,6 +151,14 @@ public class GameProperties {
 
     public static synchronized int minutesUntilGameEnd() {
         return minutesUntilGameEnd;
+    }
+
+    public static synchronized void setTeleportAfterGameEnd(boolean teleportAfterGameEnd) {
+        GameProperties.teleportAfterGameEnd = teleportAfterGameEnd;
+    }
+
+    public static synchronized void setClearInventoryAfterGameEnd(boolean cleanInventoryAfterGameEnd) {
+        GameProperties.clearInventoryAfterGameEnd = cleanInventoryAfterGameEnd;
     }
 
     public static synchronized void setGamePaused(boolean gamePaused) {

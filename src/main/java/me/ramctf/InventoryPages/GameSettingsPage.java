@@ -61,6 +61,14 @@ public class GameSettingsPage implements Listener{
                     GameProperties.setDoPregameHunger(true);
                 }
                 ShowHomePage(p);
+            } else if(clickedItem.getType() == Material.STRING){
+                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 1);
+                if(GameProperties.clearInventoryAfterGameEnd()){
+                    GameProperties.setClearInventoryAfterGameEnd(false);
+                } else {
+                    GameProperties.setClearInventoryAfterGameEnd(true);
+                }
+                ShowHomePage(p);
             }
 
 
@@ -75,17 +83,19 @@ public class GameSettingsPage implements Listener{
         }
 
         inv.setItem(0, InventorySlotsSettings.getSettingsBackSlot());
-        inv.setItem(2, InventorySlotsSettings.getSettingsPregameTimeSlot());
-        inv.setItem(3, InventorySlotsSettings.getSettingsGameTimeSlot());
-        inv.setItem(4, InventorySlotsSettings.getSettingsPlayerLootDrop());
-        inv.setItem(5, InventorySlotsSettings.getSettingsFlagBuildProtection());
-        inv.setItem(6, InventorySlotsSettings.getSettingsHungerSlot());
+        inv.setItem(1, InventorySlotsSettings.getSettingsPregameTimeSlot());
+        inv.setItem(2, InventorySlotsSettings.getSettingsGameTimeSlot());
+        inv.setItem(3, InventorySlotsSettings.getSettingsPlayerLootDrop());
+        inv.setItem(4, InventorySlotsSettings.getSettingsFlagBuildProtection());
+        inv.setItem(5, InventorySlotsSettings.getSettingsHungerSlot());
+        inv.setItem(6, InventorySlotsSettings.getSettingsCleanInventoryAfterGameEnd());
 
-        inv.setItem(11, InventorySlotsSettings.getSettingsPregameTimeInfoSlot());
-        inv.setItem(12, InventorySlotsSettings.getSettingsGameTimeInfoSlot());
-        inv.setItem(13, InventorySlotsSettings.getSettingsPlayerLootDropInfoSlot());
-        inv.setItem(14, InventorySlotsSettings.getSettingsFlagBuildProtectionInfoSlot());
-        inv.setItem(15, InventorySlotsSettings.getSettingsHungerInfoSlot());
+        inv.setItem(10, InventorySlotsSettings.getSettingsPregameTimeInfoSlot());
+        inv.setItem(11, InventorySlotsSettings.getSettingsGameTimeInfoSlot());
+        inv.setItem(12, InventorySlotsSettings.getSettingsPlayerLootDropInfoSlot());
+        inv.setItem(13, InventorySlotsSettings.getSettingsFlagBuildProtectionInfoSlot());
+        inv.setItem(14, InventorySlotsSettings.getSettingsHungerInfoSlot());
+        inv.setItem(15, InventorySlotsSettings.getSettingsCleanInventoryAfterGameEndInfoSlot());
 
         p.openInventory(inv);
     }

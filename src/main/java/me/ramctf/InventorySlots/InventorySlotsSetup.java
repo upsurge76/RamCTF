@@ -155,13 +155,25 @@ public class InventorySlotsSetup {
     public static ItemStack getHideParticlesAndScoreboard(){
         ItemStack paperItemStack = new ItemStack(Material.PAPER);
         ItemMeta paperItemStackMeta = paperItemStack.getItemMeta();
-        if(GameProperties.hideScoreboardAndParticles()){
-            paperItemStackMeta.setDisplayName(ChatColor.WHITE + "Show Particles and Scoreboard");
-        } else {
-            paperItemStackMeta.setDisplayName(ChatColor.WHITE + "Hide Particles and Scoreboard");
-        }
+        paperItemStackMeta.setDisplayName(ChatColor.WHITE + "Show Particles and Scoreboard");
         paperItemStack.setItemMeta(paperItemStackMeta);
         return paperItemStack;
+    }
+
+    public static ItemStack getHideParticlesAndScoreboardInfo(){
+        if(GameProperties.hideScoreboardAndParticles()){
+            ItemStack greenStainedGlassPane = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+            ItemMeta greenStainedGlassPaneMeta = greenStainedGlassPane.getItemMeta();
+            greenStainedGlassPaneMeta.setDisplayName(ChatColor.WHITE + "Particles and Scoreboard Hidden");
+            greenStainedGlassPane.setItemMeta(greenStainedGlassPaneMeta);
+            return greenStainedGlassPane;
+        } else {
+            ItemStack redStainedGlassPane = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
+            ItemMeta redStainedGlassPaneMeta = redStainedGlassPane.getItemMeta();
+            redStainedGlassPaneMeta.setDisplayName(ChatColor.WHITE + "Particles and Scoreboard Shown");
+            redStainedGlassPane.setItemMeta(redStainedGlassPaneMeta);
+            return redStainedGlassPane;
+        }
     }
 
     public static ItemStack getGlassPane(){
