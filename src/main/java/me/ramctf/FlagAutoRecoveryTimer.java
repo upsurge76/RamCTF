@@ -28,7 +28,7 @@ public class FlagAutoRecoveryTimer {
             public void run() {
                 blueBossBar.setProgress(timer / (double)GameProperties.flagAutorecoveryTimer());
                 timer -= 1;
-                if(GameProperties.blueFlagLocationBase().equals(GameProperties.blueFlagCurrentLocation())){
+                if(!GameProperties.blueFlagOnGround()){
                     blueBossBar.removeAll();
                     cancel();
                 }
@@ -53,7 +53,7 @@ public class FlagAutoRecoveryTimer {
             public void run() {
                 redBossBar.setProgress(timer / (double)GameProperties.flagAutorecoveryTimer());
                 timer -= 1;
-                if(GameProperties.redFlagLocationBase().equals(GameProperties.redFlagCurrentLocation())){
+                if(!GameProperties.redFlagOnGround()){
                     redBossBar.removeAll();
                     cancel();
                 }

@@ -69,6 +69,14 @@ public class GameSettingsPage implements Listener{
                     GameProperties.setClearInventoryAfterGameEnd(true);
                 }
                 ShowHomePage(p);
+            } else if(clickedItem.getType() == Material.ENDER_PEARL){
+                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 1);
+                if(GameProperties.teleportAfterGameEnd()){
+                    GameProperties.setTeleportAfterGameEnd(false);
+                } else {
+                    GameProperties.setTeleportAfterGameEnd(true);
+                }
+                ShowHomePage(p);
             }
 
 
@@ -89,6 +97,7 @@ public class GameSettingsPage implements Listener{
         inv.setItem(4, InventorySlotsSettings.getSettingsFlagBuildProtection());
         inv.setItem(5, InventorySlotsSettings.getSettingsHungerSlot());
         inv.setItem(6, InventorySlotsSettings.getSettingsCleanInventoryAfterGameEnd());
+        inv.setItem(7, InventorySlotsSettings.getSettingsTeleportAfterGameEnd());
 
         inv.setItem(10, InventorySlotsSettings.getSettingsPregameTimeInfoSlot());
         inv.setItem(11, InventorySlotsSettings.getSettingsGameTimeInfoSlot());
@@ -96,6 +105,7 @@ public class GameSettingsPage implements Listener{
         inv.setItem(13, InventorySlotsSettings.getSettingsFlagBuildProtectionInfoSlot());
         inv.setItem(14, InventorySlotsSettings.getSettingsHungerInfoSlot());
         inv.setItem(15, InventorySlotsSettings.getSettingsCleanInventoryAfterGameEndInfoSlot());
+        inv.setItem(16, InventorySlotsSettings.getSettingsTeleportAfterGameEndInfoSlot());
 
         p.openInventory(inv);
     }

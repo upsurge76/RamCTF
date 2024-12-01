@@ -127,7 +127,7 @@ public class GameManager {
         FireworkMeta fireworkMeta = firework.getFireworkMeta();
 
         fireworkMeta.addEffect(FireworkEffect.builder()
-                .withColor(org.bukkit.Color.BLUE)
+                .withColor(org.bukkit.Color.WHITE)
                 .with(FireworkEffect.Type.BALL)
                 .withFlicker()
                 .withTrail()
