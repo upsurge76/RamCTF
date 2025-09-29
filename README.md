@@ -1,23 +1,14 @@
+# RAM CTF: Simple Capture the Flag
 
-# RAM CTF
+Ram CTF is a lightweight and easy-to-use Capture the Flag plugin for Spigot/Bukkit servers. All configuration is managed through in-game GUI menus.
 
-Minecraft's Simplest Capture the Flag Plugin
+## Commands
+- `/setup` - The main command for game setup, which opens the GUI menu. *(Requires OP/Admin permissions)*
+- `/team` - Opens the team selection menu.
 
-
-
-
-
-## About
-
-RAM CTF is meant to be a super easy to use capture the flag experience. It has several customizable features, but the customization is kept to a minimum to allow for ease of use. The flag location can be set anywhere, and a 3x3 area around the flag will be unbreakable to prevent the flag from being covered up. If the flag carrier is killed, the flag will automatically be recovered after a minute. There is an optional pregame timer where players will have time to collect resources prior to the start of the game. You can go into the settings to disable this timer if you wish to use premade kits instead. This pregame timer, as well as the game timer, is customizable in the settings.
-## Usage
-
-
-| Command |  Description |
-| :-------- | :------------------------- |
-| `/setup` |  Main game setup. Only op users can use this command |
-| `/team` | Shows team menu | 
-
-
-
-
+## Features
+- **Flag Protection**: An optional 3x3 area around each team's flag is indestructible. This ensures that the flag cannot be buried or otherwise made inaccessible
+- **Pregame Resource Collection**: An optional pregame timer can be enabled, allowing time to gather resources
+- **Customizable Timers**: Both the pregame and main game timers are fully customizable
+- **Flag Carrier Identification**: Flag carriers have a glowing effect, allowing them to be seen behind walls. They also emit colored particles of the flag they stole
+- **Regen Effect**: Killing a player during the match gives a regeneration effect for 4 seconds. This can be disabled
